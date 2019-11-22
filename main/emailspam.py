@@ -9,7 +9,7 @@ while (True):
     # Senders email (must be a gmail adress)
     from_addr = 'gmail@gmail.com'
     # Recipients (doesnt need to be multiple)
-    to_addr = ['email1@email.com', 'email2@email.com']
+    to_addr = ['email@email.com', 'email2@email.com']
     # Read password.txt for password
     p_reader = open('password.txt')
     cipher = p_reader.read()
@@ -38,3 +38,6 @@ while (True):
 
     # Terminating the session
     server.quit()
+
+    # Output
+    print(f'Email sent to: {", ".join(to_addr)} ({sent})')
