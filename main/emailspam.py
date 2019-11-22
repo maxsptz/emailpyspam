@@ -17,8 +17,8 @@ while (True):
     number = random.randint(0,10000)
 
     # Subject & Body
-    subject = 'Become a slav today! (' + str(number) + ')'
-    body = 'Join this great country!'
+    subject = 'Message (' + str(number) + ')'
+    body = 'body!'
     # Construct email
     msg = EmailMessage()
     msg.add_header('from', from_addr)
