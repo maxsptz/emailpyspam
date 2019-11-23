@@ -44,7 +44,7 @@ End with an example of getting some data out of the system or using it for a lit
 ## Screenshots
 
 Welcome message:
-![Image of welcome message](https://imgur.com/q3RLv0V)
+![Image of welcome message](https://i.imgur.com/q3RLv0V.png)
 
 ## Built With
 
