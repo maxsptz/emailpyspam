@@ -194,6 +194,6 @@ elif choice == 3:
         server.quit()
 
 else:
-    print(bcolors.FAIL + 'Invalid input! Exiting...')
+    print(bcolors.FAIL + 'Invalid input! Exiting...' + bcolors.ENDC)
     time.sleep(2)
     sys.exit(0)
