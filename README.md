@@ -59,7 +59,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 * **Max Spitzer** - *Initial work* - [Curioo](https://github.com/Curioo)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Curioo/emailpyspam/contributors) who participated in this project.
 
 ## License
 
