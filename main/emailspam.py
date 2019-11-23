@@ -44,8 +44,8 @@ if choice == 1:
             to_addr.append(addr)
     predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N) ' + bcolors.ENDC)
     if predef.lower() == 'y':
-        f = open("subject.txt", "r")
-        subject = f.read() + ' (' + str(number) + ')'
+        p_reader = open("subject.txt", 'r')
+        subject = p_reader.readline(1) + ' (' + str(number) + ')'
     else:
         subject = input(bcolors.OKGREEN + 'Subject: ' + bcolors.ENDC)
         subject = subject + ' (' + str(number) + ')'
@@ -99,8 +99,8 @@ elif choice == 2:
             to_addr.append(addr)
     predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N) ' + bcolors.ENDC)
     if predef.lower() == 'y':
-        f = open("subject.txt", "r")
-        subject = f.read() + ' (' + str(number) + ')'
+        p_reader = open("subject.txt", 'r')
+        subject = p_reader.readline(1) + ' (' + str(number) + ')'
     else:
         subject = input(bcolors.OKGREEN + 'Subject:' + bcolors.ENDC)
         subject = subject + ' (' + str(number) + ')'
@@ -154,8 +154,8 @@ elif choice == 3:
     predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N) ' + bcolors.ENDC)
 
     if predef.lower() == 'y':
-        f = open("subject.txt", "r")
-        subject = f.read() + ' (' + str(number) + ')'
+        p_reader = open("subject.txt", 'r')
+        subject = p_reader.readline(1) + ' (' + str(number) + ')'
     else:
         subject = input(bcolors.OKGREEN + 'Subject: ' + bcolors.ENDC)
         subject = subject + ' (' + str(number) + ')'
