@@ -32,7 +32,7 @@ choice = int(input(bcolors.OKGREEN + 'Number: ' + bcolors.ENDC))
 # Gmail
 if choice == 1:
     number = random.randint(0,10000)
-    from_addr = input(bcolors.OKGREEN + 'Your Google Email: ' + bcolors.ENDC)
+    from_addr = input(bcolors.OKGREEN + '\nYour Google Email: ' + bcolors.ENDC)
     cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
     to_addr = []
     addr = ""
