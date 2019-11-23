@@ -4,6 +4,7 @@ import random
 import time
 import getpass
 import sys
+import os
 
 class bcolors:
 	OKGREEN = '\033[92m'
@@ -11,6 +12,7 @@ class bcolors:
 	FAIL = '\033[91m'
 	ENDC = '\033[0m'
 
+os.system('clear')
 try:
 	file1 = open('banner.txt', 'r')
 	print(' ')
