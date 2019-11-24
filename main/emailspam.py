@@ -6,7 +6,6 @@ import getpass
 import sys
 import os
 
-
 class bcolors:
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
@@ -30,10 +29,10 @@ try:
     2) Yahoo
     3) Hotmail/Outlook
     ''' + bcolors.ENDC + '--------------------------------------------------------------')
-    choice = int(input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC))
+    choice = input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC)
 
     # Gmail
-    if choice == 1:
+    if choice == "1":
         number = random.randint(0, 10000)
         from_addr = input(bcolors.OKGREEN + 'Your Google Email: ' + bcolors.ENDC)
         cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
@@ -45,33 +44,42 @@ try:
                 break
             else:
                 to_addr.append(addr)
-        predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N) ' + bcolors.ENDC)
+        predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N): ' + bcolors.ENDC)
         if predef.lower() == 'y':
             p_reader = open("subject.txt", 'r')
-            subject = p_reader.readline(1) + ' (' + str(number) + ')'
+            subject = p_reader.readline()
+            index = len(subject) - 1
+            subject = subject[0:index]
+            p_reader.close()
+            length = len (subject)
+            subject += ' (' + str(number) + ')'
         else:
             subject = input(bcolors.OKGREEN + 'Subject: ' + bcolors.ENDC)
-            subject = subject + ' (' + str(number) + ')'
+            length = len (subject)
+            subject += ' (' + str(number) + ')'
 
-        predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N) ' + bcolors.ENDC)
+        predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N): ' + bcolors.ENDC)
 
         if predef1.lower() == 'y':
             f = open("body.txt", "r")
             body = f.read()
+            f.close()
         else:
             body = input(bcolors.OKGREEN + 'Body: ' + bcolors.ENDC)
-        speed = float(input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds) " + bcolors.ENDC))
+        speed = float(input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC))
 
         print(bcolors.WARNING + "Emails will be sent continuously, until this window is closed." + bcolors.ENDC)
         time.sleep(1)
         sent = int(0)
         while True:
             sent += 1
+            number = random.randint(0, 10000)
+            subject = subject[0:length] + " (" + str(number) + ")"
             # Construct email
             msg = EmailMessage()
-            msg.add_header('from', from_addr)
+            msg.add_header('From', from_addr)
             msg.add_header('To', ', '.join(to_addr))
-            msg.add_header('subject', subject)
+            msg.add_header('Subject', subject)
             msg.set_payload(body)
             # Connect
             server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -90,7 +98,7 @@ try:
                 print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
                 sys.exit()
     # Yahoo Mail
-    elif choice == 2:
+    elif choice == "2":
         number = random.randint(0, 10000)
         from_addr = input(bcolors.OKGREEN + 'Your Yahoo Email: ' + bcolors.ENDC)
         cipher = getpass.getpass()
@@ -102,32 +110,41 @@ try:
                 break
             else:
                 to_addr.append(addr)
-        predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N) ' + bcolors.ENDC)
+        predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N): ' + bcolors.ENDC)
         if predef.lower() == 'y':
             p_reader = open("subject.txt", 'r')
-            subject = p_reader.readline(1) + ' (' + str(number) + ')'
+            subject = p_reader.readline()
+            index = len(subject) - 1
+            subject = subject[0:index]
+            p_reader.close()
+            length = len (subject)
+            subject += ' (' + str(number) + ')'
         else:
             subject = input(bcolors.OKGREEN + 'Subject:' + bcolors.ENDC)
+            length = len (subject)
             subject = subject + ' (' + str(number) + ')'
 
-        predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N) ' + bcolors.ENDC)
+        predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N): ' + bcolors.ENDC)
 
         if predef1.lower() == 'y':
             f = open("body.txt", "r")
             body = f.read()
+            f.close()
         else:
             body = input(bcolors.OKGREEN + 'Body: ' + bcolors.ENDC)
-        speed = float(input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds) " + bcolors.ENDC))
+        speed = float(input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC))
         print(bcolors.WARNING + "Emails will be sent continuously, until this window is closed." + bcolors.ENDC)
         time.sleep(1)
         sent = int(0)
         while True:
             sent += 1
+            number = random.randint(0, 10000)
+            subject = subject[0:length] + " (" + str(number) + ")"
             # Construct email
             msg = EmailMessage()
-            msg.add_header('from', from_addr)
+            msg.add_header('From', from_addr)
             msg.add_header('To', ', '.join(to_addr))
-            msg.add_header('subject', subject)
+            msg.add_header('Subject', subject)
             msg.set_payload(body)
             # Connect
             server = smtplib.SMTP("smtp.mail.yahoo.com", 587)
@@ -147,7 +164,7 @@ try:
                 sys.exit()
 
     # Outlook / Hotmail
-    elif choice == 3:
+    elif choice == "3":
         number = random.randint(0, 10000)
         from_addr = input(bcolors.OKGREEN + 'Your Hotmail/Outlook Email: ' + bcolors.ENDC)
         cipher = getpass.getpass()
@@ -159,35 +176,44 @@ try:
                 break
             else:
                 to_addr.append(addr)
-        predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N) ' + bcolors.ENDC)
+        predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N): ' + bcolors.ENDC)
 
         if predef.lower() == 'y':
             p_reader = open("subject.txt", 'r')
-            subject = p_reader.readline(1) + ' (' + str(number) + ')'
+            subject = p_reader.readline()
+            index = len(subject) - 1
+            subject = subject[0:index]
+            p_reader.close()
+            length = len (subject)
+            subject += ' (' + str(number) + ')'
         else:
             subject = input(bcolors.OKGREEN + 'Subject: ' + bcolors.ENDC)
+            length = len (subject)
             subject = subject + ' (' + str(number) + ')'
 
-        predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N) ' + bcolors.ENDC)
+        predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N): ' + bcolors.ENDC)
 
         if predef1.lower() == 'y':
             f = open("body.txt", "r")
             body = f.read()
+            f.close()
         else:
             body = input(bcolors.OKGREEN + 'Body: ' + bcolors.ENDC)
 
-        speed = float(input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds) " + bcolors.ENDC))
+        speed = float(input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC))
         print(bcolors.WARNING + "Emails will be sent continuously, until this window is closed." + bcolors.ENDC)
 
         time.sleep(1)
         sent = int(0)
         while True:
             sent += 1
+            number = random.randint(0, 10000)
+            subject = subject[0:length] + " (" + str(number) + ")"
             # Construct email
             msg = EmailMessage()
-            msg.add_header('from', from_addr)
+            msg.add_header('From', from_addr)
             msg.add_header('To', ', '.join(to_addr))
-            msg.add_header('subject', subject)
+            msg.add_header('Subject', subject)
             msg.set_payload(body)
             # Connect
             server = smtplib.SMTP("smtp-mail.outlook.com", 587)
