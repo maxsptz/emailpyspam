@@ -333,22 +333,16 @@ try:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
-                    print(from_address,password)#delete line for real use
-                    sent += 1#delete line for real use
-                    #uncomment line below for real use
-                    #gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                    if sent == 19:#change to 499 for real use
+                    gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    if sent == 499:
                         from_address,password = gMultiple()
                         spam = True
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = gSingle()
             sendSpeed,to_address,body,subject,length = structure()
-            sent += 1#delete line for real use
-            while sent < 19:#change to 499 for real use
-                #uncomment line below for real use
-                #gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print(from_address,password)#delete line for real use
+            while sent < 499:
+                gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -364,20 +358,16 @@ try:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
-                    print(from_address,password)
-                    sent += 1
-                    #yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                    if sent == 19:
+                    yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    if sent == 499:
                         from_address,password = yMultiple()
                         spam = True
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = ySingle()
             sendSpeed,to_address,body,subject,length = structure()
-            sent += 1
-            while sent < 19:
-                #gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print(from_address,password)
+            while sent < 499:
+                yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -393,20 +383,16 @@ try:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
-                    print(from_address,password)
-                    sent += 1
-                    #outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                    if sent == 19:
+                    outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    if sent == 499:
                         from_address,password = oMultiple()
                         spam = True
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = oSingle()
             sendSpeed,to_address,body,subject,length = structure()
-            sent += 1
-            while sent < 19:
-                #outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print(from_address,password)
+            while sent < 499:
+                outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
