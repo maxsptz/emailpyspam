@@ -39,8 +39,13 @@ Start the program
 python3 emailspam.py
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+## Usage
 
+You have the ability to use the program in two ways.
+* Simple
+  * Type an email and password in at the beginning
+* Extended
+  * Have the program access a list of emails and passwords to access once an email has been locked
 ## Screenshots
 
 Welcome message:
