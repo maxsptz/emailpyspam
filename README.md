@@ -21,6 +21,12 @@ Clone the repository
 git clone https://github.com/Curioo/emailpyspam.git
 ```
 
+Install required libraries
+
+```
+pip3 install -r requirements.txt
+```
+
 Navigate into main directory
 
 ```
