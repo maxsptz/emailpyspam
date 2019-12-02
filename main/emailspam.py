@@ -241,7 +241,7 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher):
             server.starttls()
             try:
                 server.login(from_addr, cipher)
-                server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
+                server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
                 server.quit()
                 print(bcolors.OKGREEN + f'Email sent to: {", ".join(to_addr)} ({sent})' + bcolors.ENDC)
                 time.sleep(speed)
@@ -272,7 +272,7 @@ def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher):
         server.starttls()
         try:
             server.login(from_addr, cipher)
-            server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
+            server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
             server.quit()
             print(bcolors.OKGREEN + f'Email sent to: {", ".join(to_addr)} ({sent})' + bcolors.ENDC)
             time.sleep(speed)
@@ -303,7 +303,7 @@ def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher):
         server.starttls()
         try:
             server.login(from_addr, cipher)
-            server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
+            server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
             server.quit()
             print(bcolors.OKGREEN + f'Email sent to: {", ".join(to_addr)} ({sent})' + bcolors.ENDC)
             time.sleep(speed)
