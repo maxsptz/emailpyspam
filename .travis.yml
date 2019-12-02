@@ -20,3 +20,5 @@ script:
   - python3 emailspam.py
   - echo "1"
   - echo "xxxxxxxxxxxxxxxxxxx"
+env:
+  - CODECOV_TOKEN="0039b496-feda-4c83-bff6-ad40abdc6f69"
