@@ -1,4 +1,7 @@
-language : python
+language: python
+rvm:
+ - 2.2
+ - tabulate
 # blocklist
 branches:
   except:
