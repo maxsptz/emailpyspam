@@ -1,4 +1,4 @@
-language : python3.8
+language : python
 # blocklist
 branches:
   except:
