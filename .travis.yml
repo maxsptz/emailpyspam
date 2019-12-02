@@ -1,0 +1,10 @@
+language : python
+# blocklist
+branches:
+  except:
+  - testing
+
+# safelist
+branches:
+  only:
+  - master
