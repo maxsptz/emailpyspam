@@ -17,5 +17,4 @@ branches:
   - master
 script:
   - cd main/
-  - python3 emailspam.py
-  - 1
+  - python3 emailspam.py < testing.txt
