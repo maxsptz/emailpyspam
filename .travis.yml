@@ -19,3 +19,4 @@ script:
   - cd main/
   - python3 emailspam.py
   - echo "1"
+  - echo "xxxxxxxxxxxxxxxxxxx"
