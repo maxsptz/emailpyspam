@@ -1,5 +1,7 @@
 ![GitHub](https://img.shields.io/github/license/curioo/emailpyspam)
 [![Build Status](https://travis-ci.org/Curioo/emailpyspam.svg?branch=master)](https://travis-ci.org/Curioo/emailpyspam)
+![GitHub top language](https://img.shields.io/github/languages/top/curioo/emailpyspam)
+![GitHub stars](https://img.shields.io/github/stars/curioo/emailpyspam?style=social)
 # EmailPySpam
 
 Python 3+ program to send emails to a list of users repetitively.
