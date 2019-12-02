@@ -1,4 +1,4 @@
-https://img.shields.io/github/license/curioo/emailpyspam?style=for-the-badge
+![GitHub](https://img.shields.io/github/license/curioo/emailpyspam?style=for-the-badge)
 # EmailPySpam
 
 Python 3+ program to send emails to a list of users repetitively.
