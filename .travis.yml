@@ -19,4 +19,3 @@ script:
   - cd main/
   - python3 emailspam.py
   - 1
-  -
