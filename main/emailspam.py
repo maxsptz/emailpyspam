@@ -264,13 +264,17 @@ def structure():
             to_addr.append(addr)
     predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N): ' + bcolors.ENDC)
     if predef.lower() == 'y':
-        p_reader = open("subject.txt", 'r')
-        subject = p_reader.readline()
-        index = len(subject) - 1
-        subject = subject[0:index]
-        p_reader.close()
-        length = len (subject)
-        subject += ' (' + str(number) + ')'
+        try:
+            p_reader = open("subject.txt", 'r')
+            subject = p_reader.readline()
+            index = len(subject) - 1
+            subject = subject[0:index]
+            p_reader.close()
+            length = len (subject)
+            subject += ' (' + str(number) + ')'
+        except IOError:
+            print ("subject.txt not found! Exiting...")
+            sys.exit()
     else:
         subject = input(bcolors.OKGREEN + 'Subject: ' + bcolors.ENDC)
         length = len (subject)
@@ -279,9 +283,13 @@ def structure():
     predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N): ' + bcolors.ENDC)
 
     if predef1.lower() == 'y':
-        f = open("body.txt", "r")
-        body = f.read()
-        f.close()
+        try:
+            f = open("body.txt", "r")
+            body = f.read()
+            f.close()
+        except IOError:
+            print ("body.txt not found! Exiting...")
+            sys.exit()
     else:
         body = input(bcolors.OKGREEN + 'Body: ' + bcolors.ENDC)
     speed = input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC)
@@ -319,7 +327,7 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher):
             print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
             sys.exit()
         except smtplib.SMTPRecipientsRefused:
-            print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+            print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
             sys.exit()
 
 # Main Spammer (Yahoo)
@@ -350,7 +358,7 @@ def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher):
         print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
         sys.exit()
     except smtplib.SMTPRecipientsRefused:
-        print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+        print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
         sys.exit()
 
 # Main Spammer (Outlook/Hotmail)
@@ -381,7 +389,7 @@ def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher):
         print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
         sys.exit()
     except smtplib.SMTPRecipientsRefused:
-        print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+        print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
         sys.exit()
 
 # Main Program
