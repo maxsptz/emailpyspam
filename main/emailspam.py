@@ -105,8 +105,10 @@ def gmailInstruct():
 # Yahoo DISCLAIMER
 
 def yahooInstruct():
-    print(bcolors.FAIL + "\nDISCLAIMER: Yahoo has a limit of 100 emails per hour per account" + bcolors.ENDC)
-    print(bcolors.WARNING + "This can be surpassed by using multiple emails."\
+    print(bcolors.FAIL + "\nDISCLAIMER: Yahoo has a limit of 100 recipients per email (this cannot be exceeded)." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nYahoo also has a limit of 500 emails per day per account (this can be exceeded)." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(Emails and passwords must be predefined in yahoo.txt and yahoopass.txt)"\
     "\n1) Yes"\
