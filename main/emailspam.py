@@ -397,6 +397,7 @@ try:
     # Gmail
     if choice == "1":
         multiple = gmailInstruct()
+        multiple = validMultiple(multiple)
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = gMultiple()
             sendSpeed,to_address,body,subject,length = structure()
@@ -436,6 +437,7 @@ try:
     # Yahoo
     elif choice == "2":
         multiple = yahooInstruct()
+        multiple = validMultiple(multiple)
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = yMultiple()
             sendSpeed,to_address,body,subject,length = structure()
@@ -475,6 +477,7 @@ try:
     # Outlook/Hotmail
     elif choice == "3":
         multiple = outlookInstruct()
+        multiple = validMultiple(multiple)
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = oMultiple()
             sendSpeed,to_address,body,subject,length = structure()
@@ -508,9 +511,11 @@ try:
                     print ("Limit reached. Exiting...")
                     sys.exit()
         else:
-            multiple = validMultiple(multiple)
+            print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
+            sys.exit()
     else:
-        choice = validChoice(choice)
+        print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
+        sys.exit()
 
 except KeyboardInterrupt:
     print(bcolors.FAIL + "\nCancelled!" + bcolors.ENDC)
