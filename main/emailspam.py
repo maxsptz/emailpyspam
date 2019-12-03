@@ -408,8 +408,12 @@ try:
             sendSpeed,to_address,body,subject,length = structure()
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent != 499:
-                gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                try:
+                    gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -443,8 +447,12 @@ try:
             sendSpeed,to_address,body,subject,length = structure()
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent != 499:
-                yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                try:
+                    yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -478,8 +486,12 @@ try:
             sendSpeed,to_address,body,subject,length = structure()
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent != 499:
-                outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                try:
+                    outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
