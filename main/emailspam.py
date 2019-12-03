@@ -63,6 +63,20 @@ def banner():
     except IOError:
         print('Banner File not found')
 
+def validChoice(choice):
+    while choice != "1" or choice != "2" or choice != "3":
+        print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
+        time.sleep(1)
+        choice = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    return choice
+
+def validMultiple(multiple):
+    while multiple != "1" or multiple.upper() != "YES" or multiple != "2" or multiple.upper() != "NO":
+        print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
+        time.sleep(1)
+        multiple = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    return multiple
+
 def validSpeed(s):
     valid = False
     while not valid:
@@ -76,13 +90,6 @@ def validSpeed(s):
             s = float (s)
             valid = True
     return s
-
-def validChoice(choice):
-    while choice != "1" or choice != "2" or choice != "3":
-        print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
-        time.sleep(1)
-        choice = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
-    return choice
 
 # Choose Mail Service
 
@@ -501,11 +508,10 @@ try:
                     print ("Limit reached. Exiting...")
                     sys.exit()
         else:
-            print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
-            sys.exit()
+            multiple = validMultiple(multiple)
     else:
-        print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
-        sys.exit()
+        choice = validChoice(choice)
+
 except KeyboardInterrupt:
     print(bcolors.FAIL + "\nCancelled!" + bcolors.ENDC)
     sys.exit()
