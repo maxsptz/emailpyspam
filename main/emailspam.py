@@ -93,7 +93,8 @@ def mailChoice():
 
 def gmailInstruct():
     print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of 500 emails per day per account" + bcolors.ENDC)
-    print(bcolors.WARNING + "This can be surpassed by using multiple emails."\
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(Emails and passwords must be predefined in gmail.txt and gmailpass.txt)"\
     "\n1) Yes"\
