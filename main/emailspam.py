@@ -6,14 +6,50 @@ import time
 import getpass
 import sys
 import os
+from tabulate import tabulate
 
 # Colour Scheme
 
 class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    #-----
+    ITALIC   = '\33[3m'
+    URL      = '\33[4m'
+    BLINK    = '\33[5m'
+    BLINK2   = '\33[6m'
+    SELECTED = '\33[7m'
+
+    BLACK  = '\33[30m'
+    RED    = '\33[31m'
+    GREEN  = '\33[32m'
+    YELLOW = '\33[33m'
+    BLUE   = '\33[34m'
+    VIOLET = '\33[35m'
+    BEIGE  = '\33[36m'
+    WHITE  = '\33[37m'
+
+    BLACKBG  = '\33[40m'
+    REDBG    = '\33[41m'
+    GREENBG  = '\33[42m'
+    YELLOWBG = '\33[43m'
+    BLUEBG   = '\33[44m'
+    VIOLETBG = '\33[45m'
+    BEIGEBG  = '\33[46m'
+    WHITEBG  = '\33[47m'
+
+    GREY    = '\33[90m'
+    BEIGE2  = '\33[96m'
+    WHITE2  = '\33[97m'
+
+    GREYBG    = '\33[100m'
+    REDBG2    = '\33[101m'
 
 # Functions
 
@@ -26,6 +62,20 @@ def banner():
         file1.close()
     except IOError:
         print('Banner File not found')
+
+def validSpeed(s):
+    valid = False
+    while not valid:
+        try:
+            float (s)
+        except ValueError:
+            print ("Invalid number for speed!")
+            time.sleep(1)
+            s = input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC)
+        else:
+            s = float (s)
+            valid = True
+    return s
 
 # Choose Mail Service
 
@@ -215,7 +265,8 @@ def structure():
         f.close()
     else:
         body = input(bcolors.OKGREEN + 'Body: ' + bcolors.ENDC)
-    speed = float(input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC))
+    speed = input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC)
+    speed = validSpeed(speed)
 
     print(bcolors.WARNING + "Emails will be sent continuously, until this window is closed." + bcolors.ENDC)
     time.sleep(1)
@@ -224,99 +275,100 @@ def structure():
 # Main Spammer (Gmail)
 
 def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher):
-    while True:
-            global sent
-            sent += 1
-            number = random.randint(0, 10000)
-            subject = subject[0:length] + " (" + str(number) + ")"
-            # Construct email
-            msg = EmailMessage()
-            msg.add_header('From', from_addr)
-            msg.add_header('To', ', '.join(to_addr))
-            msg.add_header('Subject', subject)
-            msg.set_payload(body)
-            # Connect
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            # Start TLS for security
-            server.starttls()
-            try:
-                server.login(from_addr, cipher)
-                server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
-                server.quit()
-                print(bcolors.OKGREEN + f'Email sent to: {", ".join(to_addr)} ({sent})' + bcolors.ENDC)
-                time.sleep(speed)
-            except smtplib.SMTPAuthenticationError:
-                print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
-                sys.exit()
-            except smtplib.SMTPRecipientsRefused:
-                print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
-                sys.exit()
+        global sent
+        global Sent
+        sent += 1
+        Sent += 1
+        number = random.randint(0, 10000)
+        subject = subject[0:length] + " (" + str(number) + ")"
+        # Construct email
+        msg = EmailMessage()
+        msg.add_header('From', from_addr)
+        msg.add_header('To', ', '.join(to_addr))
+        msg.add_header('Subject', subject)
+        msg.set_payload(body)
+        # Connect
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        # Start TLS for security
+        server.starttls()
+        try:
+            server.login(from_addr, cipher)
+            server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
+            server.quit()
+            time.sleep(speed)
+        except smtplib.SMTPAuthenticationError:
+            print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
+            sys.exit()
+        except smtplib.SMTPRecipientsRefused:
+            print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+            sys.exit()
 
 # Main Spammer (Yahoo)
 
 def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher):
-    while True:
-        global sent
-        sent += 1
-        number = random.randint(0, 10000)
-        subject = subject[0:length] + " (" + str(number) + ")"
-        # Construct email
-        msg = EmailMessage()
-        msg.add_header('From', from_addr)
-        msg.add_header('To', ', '.join(to_addr))
-        msg.add_header('Subject', subject)
-        msg.set_payload(body)
-        # Connect
-        server = smtplib.SMTP("smtp.mail.yahoo.com", 587)
-        # Start TLS for security
-        server.starttls()
-        try:
-            server.login(from_addr, cipher)
-            server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
-            server.quit()
-            print(bcolors.OKGREEN + f'Email sent to: {", ".join(to_addr)} ({sent})' + bcolors.ENDC)
-            time.sleep(speed)
-        except smtplib.SMTPAuthenticationError:
-            print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
-            sys.exit()
-        except smtplib.SMTPRecipientsRefused:
-            print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
-            sys.exit()
+    global sent
+    global Sent
+    sent += 1
+    Sent += 1
+    number = random.randint(0, 10000)
+    subject = subject[0:length] + " (" + str(number) + ")"
+    # Construct email
+    msg = EmailMessage()
+    msg.add_header('From', from_addr)
+    msg.add_header('To', ', '.join(to_addr))
+    msg.add_header('Subject', subject)
+    msg.set_payload(body)
+    # Connect
+    server = smtplib.SMTP("smtp.mail.yahoo.com", 587)
+    # Start TLS for security
+    server.starttls()
+    try:
+        server.login(from_addr, cipher)
+        server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
+        server.quit()
+        time.sleep(speed)
+    except smtplib.SMTPAuthenticationError:
+        print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
+        sys.exit()
+    except smtplib.SMTPRecipientsRefused:
+        print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+        sys.exit()
 
 # Main Spammer (Outlook/Hotmail)
 
 def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher):
-    while True:
-        global sent
-        sent += 1
-        number = random.randint(0, 10000)
-        subject = subject[0:length] + " (" + str(number) + ")"
-        # Construct email
-        msg = EmailMessage()
-        msg.add_header('From', from_addr)
-        msg.add_header('To', ', '.join(to_addr))
-        msg.add_header('Subject', subject)
-        msg.set_payload(body)
-        # Connect
-        server = smtplib.SMTP("smtp-mail.outlook.com", 587)
-        # Start TLS for security
-        server.starttls()
-        try:
-            server.login(from_addr, cipher)
-            server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
-            server.quit()
-            print(bcolors.OKGREEN + f'Email sent to: {", ".join(to_addr)} ({sent})' + bcolors.ENDC)
-            time.sleep(speed)
-        except smtplib.SMTPAuthenticationError:
-            print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
-            sys.exit()
-        except smtplib.SMTPRecipientsRefused:
-            print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
-            sys.exit()
+    global sent
+    global Sent
+    sent += 1
+    Sent += 1
+    number = random.randint(0, 10000)
+    subject = subject[0:length] + " (" + str(number) + ")"
+    # Construct email
+    msg = EmailMessage()
+    msg.add_header('From', from_addr)
+    msg.add_header('To', ', '.join(to_addr))
+    msg.add_header('Subject', subject)
+    msg.set_payload(body)
+    # Connect
+    server = smtplib.SMTP("smtp-mail.outlook.com", 587)
+    # Start TLS for security
+    server.starttls()
+    try:
+        server.login(from_addr, cipher)
+        server.send_message(msg, from_addr=from_addr, to_addrs=', '.join(to_addr))
+        server.quit()
+        time.sleep(speed)
+    except smtplib.SMTPAuthenticationError:
+        print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
+        sys.exit()
+    except smtplib.SMTPRecipientsRefused:
+        print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+        sys.exit()
 
 # Main Program
 try:
     sent = 0
+    Sent = 0
     emailnum = -1
     passnum = -1
     banner()
@@ -328,21 +380,31 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = gMultiple()
             sendSpeed,to_address,body,subject,length = structure()
+            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             spam = True
             while spam is True:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
-                    gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                    if sent == 499:
+                    try:
+                        gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    except smtplib.SMTPSenderRefused:
+                        print ("Limit reached. Switching emails...")
+                        from_address,password = gMultiple()
+                        spam = True
+                        sent = 0
+                    if sent == 10:
                         from_address,password = gMultiple()
                         spam = True
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = gSingle()
             sendSpeed,to_address,body,subject,length = structure()
-            while sent < 499:
+            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            while sent == 499:
                 gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -353,12 +415,19 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = yMultiple()
             sendSpeed,to_address,body,subject,length = structure()
+            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             spam = True
             while spam is True:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
-                    yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    try:
+                        yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    except smtplib.SMTPSenderRefused:
+                        from_address,password = yMultiple()
+                        spam = True
+                        sent = 0
                     if sent == 499:
                         from_address,password = yMultiple()
                         spam = True
@@ -366,8 +435,10 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = ySingle()
             sendSpeed,to_address,body,subject,length = structure()
+            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent < 499:
                 yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -378,12 +449,19 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = oMultiple()
             sendSpeed,to_address,body,subject,length = structure()
+            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             spam = True
             while spam is True:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
-                    outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    try:
+                        outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    except smtplib.SMTPSenderRefused:
+                        from_address,password = oMultiple()
+                        spam = True
+                        sent = 0
                     if sent == 499:
                         from_address,password = oMultiple()
                         spam = True
@@ -391,8 +469,10 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = oSingle()
             sendSpeed,to_address,body,subject,length = structure()
+            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent < 499:
                 outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -402,3 +482,6 @@ try:
 except KeyboardInterrupt:
     print(bcolors.FAIL + "\nCancelled!" + bcolors.ENDC)
     sys.exit()
+
+# Add an option to give a submenu to user to choose from predefined recipient list
+# https://stackoverflow.com/questions/59135966/email-client-failing-to-add-second-recipient
