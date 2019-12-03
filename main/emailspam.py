@@ -394,7 +394,7 @@ try:
                         from_address,password = gMultiple()
                         spam = True
                         sent = 0
-                    if sent == 10:
+                    if sent == 499:
                         from_address,password = gMultiple()
                         spam = True
                         sent = 0
@@ -402,7 +402,7 @@ try:
             from_address,password = gSingle()
             sendSpeed,to_address,body,subject,length = structure()
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
-            while sent == 499:
+            while sent != 499:
                 gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
                 print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
         else:
@@ -425,6 +425,7 @@ try:
                         yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     except smtplib.SMTPSenderRefused:
+                        print ("Limit reached. Switching emails...")
                         from_address,password = yMultiple()
                         spam = True
                         sent = 0
@@ -436,7 +437,7 @@ try:
             from_address,password = ySingle()
             sendSpeed,to_address,body,subject,length = structure()
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
-            while sent < 499:
+            while sent != 499:
                 yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
                 print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
         else:
@@ -459,6 +460,7 @@ try:
                         outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     except smtplib.SMTPSenderRefused:
+                        print ("Limit reached. Switching emails...")
                         from_address,password = oMultiple()
                         spam = True
                         sent = 0
@@ -470,7 +472,7 @@ try:
             from_address,password = oSingle()
             sendSpeed,to_address,body,subject,length = structure()
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
-            while sent < 499:
+            while sent != 499:
                 outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
                 print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
         else:
@@ -484,4 +486,3 @@ except KeyboardInterrupt:
     sys.exit()
 
 # Add an option to give a submenu to user to choose from predefined recipient list
-# https://stackoverflow.com/questions/59135966/email-client-failing-to-add-second-recipient
