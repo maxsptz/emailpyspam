@@ -69,13 +69,20 @@ def validSpeed(s):
         try:
             float (s)
         except ValueError:
-            print ("Invalid number for speed!")
+            print (bcolors.FAIL + "Invalid number for speed!" + bcolors.ENDC)
             time.sleep(1)
             s = input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC)
         else:
             s = float (s)
             valid = True
     return s
+
+def validChoice(choice):
+    while choice != "1" or choice != "2" or choice != "3":
+        print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
+        time.sleep(1)
+        choice = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    return choice
 
 # Choose Mail Service
 
@@ -378,6 +385,7 @@ try:
     passnum = -1
     banner()
     choice = mailChoice()
+    choice = validChoice(choice)
 
     # Gmail
     if choice == "1":
