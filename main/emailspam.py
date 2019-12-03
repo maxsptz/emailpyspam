@@ -262,6 +262,7 @@ def structure():
             break
         else:
             to_addr.append(addr)
+    recipientNum = len (to_addr)
     predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N): ' + bcolors.ENDC)
     if predef.lower() == 'y':
         try:
@@ -297,15 +298,15 @@ def structure():
 
     print(bcolors.WARNING + "Emails will be sent continuously, until this window is closed." + bcolors.ENDC)
     time.sleep(1)
-    return speed,to_addr,body,subject,length
+    return speed,to_addr,body,subject,length,recipientNum
 
 # Main Spammer (Gmail)
 
-def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher):
+def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
         global sent
         global Sent
-        sent += 1
-        Sent += 1
+        sent += (1*recipientNum)
+        Sent += (1*recipientNum)
         number = random.randint(0, 10000)
         subject = subject[0:length] + " (" + str(number) + ")"
         # Construct email
@@ -332,11 +333,11 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher):
 
 # Main Spammer (Yahoo)
 
-def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher):
+def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
     global sent
     global Sent
-    sent += 1
-    Sent += 1
+    sent += (1*recipientNum)
+    Sent += (1*recipientNum)
     number = random.randint(0, 10000)
     subject = subject[0:length] + " (" + str(number) + ")"
     # Construct email
@@ -363,11 +364,11 @@ def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher):
 
 # Main Spammer (Outlook/Hotmail)
 
-def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher):
+def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
     global sent
     global Sent
-    sent += 1
-    Sent += 1
+    sent += (1*recipientNum)
+    Sent += (1*recipientNum)
     number = random.randint(0, 10000)
     subject = subject[0:length] + " (" + str(number) + ")"
     # Construct email
@@ -408,7 +409,7 @@ try:
         multiple = validMultiple(multiple)
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = gMultiple()
-            sendSpeed,to_address,body,subject,length = structure()
+            sendSpeed,to_address,body,subject,length,recipientNum = structure()
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             spam = True
             while spam is True:
@@ -416,7 +417,7 @@ try:
                     spam = False
                 else:
                     try:
-                        gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                        gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
@@ -433,7 +434,7 @@ try:
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent != 499:
                 try:
-                    gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                     print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
@@ -456,7 +457,7 @@ try:
                     spam = False
                 else:
                     try:
-                        yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                        yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
@@ -473,7 +474,7 @@ try:
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent != 499:
                 try:
-                    yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                     print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
@@ -496,7 +497,7 @@ try:
                     spam = False
                 else:
                     try:
-                        outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                        outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
@@ -513,7 +514,7 @@ try:
             print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             while sent != 499:
                 try:
-                    outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
+                    outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                     print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
