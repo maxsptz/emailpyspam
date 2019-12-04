@@ -63,19 +63,19 @@ def banner():
     except IOError:
         print('Banner File not found')
 
-def validChoice(choice):
-    while choice != "1" or choice != "2" or choice != "3":
+def validChoice(ch):
+    while ch != "1" or ch != "2" or ch != "3":
         print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
         time.sleep(1)
-        choice = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
-    return choice
+        ch = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    return ch
 
-def validMultiple(multiple):
-    while multiple != "1" or multiple.upper() != "YES" or multiple != "2" or multiple.upper() != "NO":
+def validMultiple(mult):
+    while mult != "1" or mult.upper() != "YES" or mult != "2" or mult.upper() != "NO":
         print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
         time.sleep(1)
-        multiple = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
-    return multiple
+        mult = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    return mult
 
 def validSpeed(s):
     valid = False
@@ -520,10 +520,10 @@ try:
                     print ("Limit reached. Exiting...")
                     sys.exit()
         else:
-            print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
+            print (bcolors.FAIL + "Invaid choice! Exiting..." + bcolors.ENDC)
             sys.exit()
     else:
-        print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
+        print (bcolors.FAIL + "Invaid choice! Exiting..." + bcolors.ENDC)
         sys.exit()
 
 except KeyboardInterrupt:
