@@ -6,7 +6,12 @@ import time
 import getpass
 import sys
 import os
-from tabulate import tabulate
+try:
+    from tabulate import tabulate
+except ModuleNotFoundError:
+    table = False
+else:
+    table = True
 
 # Colour Scheme
 
@@ -418,7 +423,10 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = gMultiple()
             sendSpeed,to_address,body,subject,length,recipientNum = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
             while spam is True:
                 if from_address == "" or from_address == "\n":
@@ -426,7 +434,10 @@ try:
                 else:
                     try:
                         gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        if table:
+                            print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        else:
+                            print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
                         from_address,password = gMultiple()
@@ -439,11 +450,17 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = gSingle()
             sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 499:
                 try:
                     gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                    print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    if table:
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    else:
+                        print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
                     sys.exit()
@@ -458,7 +475,10 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = yMultiple()
             sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
             while spam is True:
                 if from_address == "" or from_address == "\n":
@@ -466,7 +486,10 @@ try:
                 else:
                     try:
                         yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        if table:
+                            print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        else:
+                            print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
                         from_address,password = yMultiple()
@@ -479,11 +502,17 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = ySingle()
             sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 499:
                 try:
                     yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                    print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    if table:
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    else:
+                        print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
                     sys.exit()
@@ -498,7 +527,10 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password = oMultiple()
             sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
             while spam is True:
                 if from_address == "" or from_address == "\n":
@@ -506,7 +538,10 @@ try:
                 else:
                     try:
                         outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        if table:
+                            print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        else:
+                            print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
                         from_address,password = oMultiple()
@@ -519,11 +554,17 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = oSingle()
             sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 499:
                 try:
                     outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                    print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    if table:
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    else:
+                        print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
                     sys.exit()
