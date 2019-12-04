@@ -64,17 +64,25 @@ def banner():
         print('Banner File not found')
 
 def validChoice(ch):
-    while ch != "1" or ch != "2" or ch != "3":
-        print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
-        time.sleep(1)
-        ch = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    valid = False
+    while not valid:
+        if ch == "1" or ch == "2" or ch == "3":
+            valid = True
+        else:
+            print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
+            time.sleep(1)
+            ch = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
     return ch
 
 def validMultiple(mult):
-    while mult != "1" or mult.upper() != "YES" or mult != "2" or mult.upper() != "NO":
-        print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
-        time.sleep(1)
-        mult = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    valid = False
+    while not valid:
+        if mult == "1" or mult.upper() == "YES" or mult == "2" or mult.upper() == "NO":
+            valid = True
+        else:
+            print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
+            time.sleep(1)
+            mult = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
     return mult
 
 def validSpeed(s):
