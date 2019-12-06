@@ -449,7 +449,7 @@ try:
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password = gSingle()
-            sendSpeed,to_address,body,subject,length = structure()
+            sendSpeed,to_address,body,subject,length,recipientNum = structure()
             if table:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
