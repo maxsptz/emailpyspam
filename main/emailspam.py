@@ -331,6 +331,7 @@ def oMultiple():
 # Send with limits (Gmail)
 
 def gSingle():
+    valid = False
     while not valid:
         from_addr = input(bcolors.OKGREEN + 'Your Google Email: ' + bcolors.ENDC)
         cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
