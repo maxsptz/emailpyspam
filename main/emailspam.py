@@ -167,6 +167,20 @@ def validSpeed(s):
             valid = True
     return s
 
+def validGmail(from_addr,cipher):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    # Start TLS for security
+    server.starttls()
+    try:
+        server.login(from_addr, cipher)
+        server.quit()
+    except smtplib.SMTPAuthenticationError:
+        print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Try again" + bcolors.ENDC)
+        valid = False
+    else:
+        valid = True
+    return valid
+
 # Choose Mail Service
 
 def mailChoice():
@@ -317,8 +331,10 @@ def oMultiple():
 # Send with limits (Gmail)
 
 def gSingle():
-    from_addr = input(bcolors.OKGREEN + 'Your Google Email: ' + bcolors.ENDC)
-    cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
+    while not valid:
+        from_addr = input(bcolors.OKGREEN + 'Your Google Email: ' + bcolors.ENDC)
+        cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
+        valid = validGmail(from_addr,cipher)
     numOfSenders = 1
     return from_addr,cipher,numOfSenders
 
