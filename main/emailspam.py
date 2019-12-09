@@ -6,7 +6,12 @@ import time
 import getpass
 import sys
 import os
-from tabulate import tabulate
+try:
+    from tabulate import tabulate
+except ModuleNotFoundError:
+    table = False
+else:
+    table = True
 
 # Colour Scheme
 
@@ -63,13 +68,98 @@ def banner():
     except IOError:
         print('Banner File not found')
 
+def validChoice(ch):
+    valid = False
+    while not valid:
+        if ch == "1" or ch == "2" or ch == "3":
+            valid = True
+        else:
+            print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
+            time.sleep(1)
+            ch = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    return ch
+
+def validMultiple(mult):
+    valid = False
+    while not valid:
+        if mult == "1" or mult.upper() == "YES" or mult == "2" or mult.upper() == "NO":
+            valid = True
+        else:
+            print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
+            time.sleep(1)
+            mult = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
+    return mult
+
+def validRecipientNum(recipientNum,choice):
+    global to_addr
+    valid = False
+    while not valid:
+        message = False
+        if recipientNum > 0:
+            if choice == "1":
+                if recipientNum <= 500:
+                    valid = True
+                else:
+                    message = True
+            elif choice == "2" or choice == "3":
+                if recipientNum <= 100:
+                    valid = True
+                else:
+                    message = True
+        else:
+            message = True
+        if message:
+            print (bcolors.FAIL + "Invalid number of recipients! You must start over." + bcolors.ENDC)
+            time.sleep(1)
+            to_addr = []
+            while True:
+                addr = input(bcolors.OKGREEN + "\nType in the recipient(s), hit enter to finish: " + bcolors.ENDC)
+                if not addr:
+                    break
+                else:
+                    to_addr.append(addr)
+            recipientNum = len (to_addr)
+            valid = False
+    return recipientNum
+
+def validSend(send,choice,multiple,recipientNum,numOfSenders):
+    valid = False
+    while not valid:
+        message = False
+        try:
+            int (send)
+        except ValueError:
+            message = True
+        else:
+            send = int (send)
+            if send > 0:
+                if choice == "3":
+                    if (send * recipientNum) < (300 * numOfSenders):
+                        valid = True
+                    else:
+                        message = True
+                elif choice == "1" or choice == "2":
+                    if (send * recipientNum) < (500 * numOfSenders):
+                        valid = True
+                    else:
+                        message = True
+            else:
+                message = True
+        if message:
+            print (bcolors.FAIL + "Invalid amount!" + bcolors.ENDC)
+            print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+            time.sleep(1)
+            send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
+            valid = False
+    return send
+
 def validSpeed(s):
     valid = False
     while not valid:
         try:
             float (s)
         except ValueError:
-            print ("Invalid number for speed!")
+            print (bcolors.FAIL + "Invalid number for speed!" + bcolors.ENDC)
             time.sleep(1)
             s = input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC)
         else:
@@ -93,7 +183,8 @@ def mailChoice():
 
 def gmailInstruct():
     print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of 500 emails per day per account" + bcolors.ENDC)
-    print(bcolors.WARNING + "This can be surpassed by using multiple emails."\
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(Emails and passwords must be predefined in gmail.txt and gmailpass.txt)"\
     "\n1) Yes"\
@@ -105,8 +196,10 @@ def gmailInstruct():
 # Yahoo DISCLAIMER
 
 def yahooInstruct():
-    print(bcolors.FAIL + "\nDISCLAIMER: Yahoo has a limit of 100 emails per hour per account" + bcolors.ENDC)
-    print(bcolors.WARNING + "This can be surpassed by using multiple emails."\
+    print(bcolors.FAIL + "\nDISCLAIMER: Yahoo has a limit of 100 recipients per email (this cannot be exceeded)." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nYahoo also has a limit of 500 emails per day per account." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(Emails and passwords must be predefined in yahoo.txt and yahoopass.txt)"\
     "\n1) Yes"\
@@ -118,13 +211,15 @@ def yahooInstruct():
 # Outlook DISCLAIMER
 
 def outlookInstruct():
-    print(bcolors.FAIL + "\nDISCLAIMER: Outlook/Hotmail has a limit of 100 recipiants per day per account" + bcolors.ENDC)
-    print(bcolors.WARNING + "This can be surpassed by using multiple emails."\
+    print(bcolors.FAIL + "\nDISCLAIMER: Outlook has a limit of 100 recipients per email (this cannot be exceeded)." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nOutlook also has a limit of 300 emails per day per account (limit also depends on reputation of email address)." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
-    "\n(Emails and passwords must be predefined in outlook.txt and outlookpass.txt)"\
+    "\n(Emails and passwords must be predefined in yahoo.txt and yahoopass.txt)"\
     "\n1) Yes"\
     "\n2) No"\
-+ bcolors.ENDC)
+    + bcolors.ENDC)
     multiple = input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC)
     return multiple
 
@@ -139,6 +234,9 @@ def gMultiple():
         gmail = fileStuff.split(",")
         emailnum += 1
         from_addr = gmail[emailnum]
+        numOfSenders = len (gmail)
+        if gmail[-1] == "\n" or gmail[-1] == "":
+            numOfSenders -= 1
         file.close()
     except IOError:
         print ("gmail.txt not found! Exiting...")
@@ -154,7 +252,7 @@ def gMultiple():
         print ("gmailpass.txt not found! Exiting...")
         sys.exit()
 
-    return from_addr,cipher
+    return from_addr,cipher,numOfSenders
 
 # Surpass Limit with multiple emails (Yahoo)
 
@@ -167,6 +265,9 @@ def yMultiple():
         yahoo = fileStuff.split(",")
         emailnum += 1
         from_addr = yahoo[emailnum]
+        numOfSenders = len (yahoo)
+        if yahoo[-1] == "\n" or yahoo[-1] == "":
+            numOfSenders -= 1
         file.close()
     except IOError:
         print ("yahoo.txt not found! Exiting...")
@@ -181,7 +282,7 @@ def yMultiple():
     except IOError:
         print ("yahoopass.txt not found! Exiting...")
         sys.exit()
-    return from_addr,cipher
+    return from_addr,cipher,numOfSenders
 
 # Surpass Limit with multiple emails (Outlook/Hotmail)
 
@@ -194,6 +295,9 @@ def oMultiple():
         outlook = fileStuff.split(",")
         emailnum += 1
         from_addr = outlook[emailnum]
+        numOfSenders = len (outlook)
+        if outlook[-1] == "\n" or outlook[-1] == "":
+            numOfSenders -= 1
         file.close()
     except IOError:
         print ("outlook.txt not found! Exiting...")
@@ -208,50 +312,65 @@ def oMultiple():
     except IOError:
         print ("outlookpass.txt not found! Exiting...")
         sys.exit()
-    return from_addr,cipher
+    return from_addr,cipher,numOfSenders
 
 # Send with limits (Gmail)
 
 def gSingle():
     from_addr = input(bcolors.OKGREEN + 'Your Google Email: ' + bcolors.ENDC)
     cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
-    return from_addr,cipher
+    numOfSenders = 1
+    return from_addr,cipher,numOfSenders
 
 # Send with limits (Yahoo)
 
 def ySingle():
     from_addr = input(bcolors.OKGREEN + 'Your Yahoo Email: ' + bcolors.ENDC)
     cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
-    return from_addr,cipher
+    numOfSenders = 1
+    return from_addr,cipher,numOfSenders
 
 # Send with limits (Outlook/Hotmail)
 
 def oSingle():
     from_addr = input(bcolors.OKGREEN + 'Your Hotmail/Outlook Email: ' + bcolors.ENDC)
     cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
-    return from_addr,cipher
+    numOfSenders = 1
+    return from_addr,cipher,numOfSenders
 
 # Main structure (subject, body, etc.)
 
-def structure():
+def structure(choice,numOfSenders):
     to_addr = []
     addr = ""
     number = random.randint(0, 10000)
     while True:
-        addr = input(bcolors.OKGREEN + "Type in the recipient, hit enter to finish: " + bcolors.ENDC)
+        addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish: " + bcolors.ENDC)
         if not addr:
             break
         else:
             to_addr.append(addr)
+    recipientNum = len (to_addr)
+    recipientNum = validRecipientNum(recipientNum,choice)
+    limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
+    if limit.lower() == "y":
+        send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
+        send = validSend(send,choice,multiple,recipientNum,numOfSenders)
+    else:
+        send = float ("inf")
     predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N): ' + bcolors.ENDC)
     if predef.lower() == 'y':
-        p_reader = open("subject.txt", 'r')
-        subject = p_reader.readline()
-        index = len(subject) - 1
-        subject = subject[0:index]
-        p_reader.close()
-        length = len (subject)
-        subject += ' (' + str(number) + ')'
+        try:
+            p_reader = open("subject.txt", 'r')
+            subject = p_reader.readline()
+            index = len(subject) - 1
+            subject = subject[0:index]
+            p_reader.close()
+            length = len (subject)
+            subject += ' (' + str(number) + ')'
+        except IOError:
+            print ("subject.txt not found! Exiting...")
+            sys.exit()
     else:
         subject = input(bcolors.OKGREEN + 'Subject: ' + bcolors.ENDC)
         length = len (subject)
@@ -260,9 +379,13 @@ def structure():
     predef1 = input(bcolors.OKGREEN + 'Would you like to use the body saved in body.txt? (Y/N): ' + bcolors.ENDC)
 
     if predef1.lower() == 'y':
-        f = open("body.txt", "r")
-        body = f.read()
-        f.close()
+        try:
+            f = open("body.txt", "r")
+            body = f.read()
+            f.close()
+        except IOError:
+            print ("body.txt not found! Exiting...")
+            sys.exit()
     else:
         body = input(bcolors.OKGREEN + 'Body: ' + bcolors.ENDC)
     speed = input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC)
@@ -270,15 +393,15 @@ def structure():
 
     print(bcolors.WARNING + "Emails will be sent continuously, until this window is closed." + bcolors.ENDC)
     time.sleep(1)
-    return speed,to_addr,body,subject,length
+    return speed,to_addr,body,subject,length,recipientNum,send
 
 # Main Spammer (Gmail)
 
-def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher):
+def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
         global sent
         global Sent
-        sent += 1
-        Sent += 1
+        sent += (1*recipientNum)
+        Sent += (1*recipientNum)
         number = random.randint(0, 10000)
         subject = subject[0:length] + " (" + str(number) + ")"
         # Construct email
@@ -300,16 +423,16 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher):
             print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
             sys.exit()
         except smtplib.SMTPRecipientsRefused:
-            print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+            print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
             sys.exit()
 
 # Main Spammer (Yahoo)
 
-def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher):
+def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
     global sent
     global Sent
-    sent += 1
-    Sent += 1
+    sent += (1*recipientNum)
+    Sent += (1*recipientNum)
     number = random.randint(0, 10000)
     subject = subject[0:length] + " (" + str(number) + ")"
     # Construct email
@@ -331,16 +454,16 @@ def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher):
         print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
         sys.exit()
     except smtplib.SMTPRecipientsRefused:
-        print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+        print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
         sys.exit()
 
 # Main Spammer (Outlook/Hotmail)
 
-def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher):
+def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
     global sent
     global Sent
-    sent += 1
-    Sent += 1
+    sent += (1*recipientNum)
+    Sent += (1*recipientNum)
     number = random.randint(0, 10000)
     subject = subject[0:length] + " (" + str(number) + ")"
     # Construct email
@@ -362,7 +485,7 @@ def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher):
         print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
         sys.exit()
     except smtplib.SMTPRecipientsRefused:
-        print(bcolors.FAIL + "\nThe The Recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
+        print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
         sys.exit()
 
 # Main Program
@@ -373,38 +496,56 @@ try:
     passnum = -1
     banner()
     choice = mailChoice()
+    choice = validChoice(choice)
 
     # Gmail
     if choice == "1":
         multiple = gmailInstruct()
+        multiple = validMultiple(multiple)
         if multiple == "1" or multiple.upper() == "YES":
-            from_address,password = gMultiple()
-            sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            from_address,password,numOfSenders = gMultiple()
+            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
-            while spam is True:
+            while spam is True and Sent < send:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
                     try:
-                        gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                        if table:
+                            print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        else:
+                            print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
-                        from_address,password = gMultiple()
+                        from_address,password,numOfSenders = gMultiple()
                         spam = True
                         sent = 0
-                    if sent == 499:
-                        from_address,password = gMultiple()
+                    if sent == 500:
+                        from_address,password,numOfSenders = gMultiple()
                         spam = True
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
-            from_address,password = gSingle()
-            sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
-            while sent != 499:
-                gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+            from_address,password,numOfSenders = gSingle()
+            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
+            while sent != 500 and Sent < send:
+                try:
+                    gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                    if table:
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    else:
+                        print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
+                except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -412,34 +553,51 @@ try:
     # Yahoo
     elif choice == "2":
         multiple = yahooInstruct()
+        multiple = validMultiple(multiple)
         if multiple == "1" or multiple.upper() == "YES":
-            from_address,password = yMultiple()
-            sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            from_address,password,numOfSenders = yMultiple()
+            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
-            while spam is True:
+            while spam is True and Sent < send:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
                     try:
-                        yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                        if table:
+                            print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        else:
+                            print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
-                        from_address,password = yMultiple()
+                        from_address,password,numOfSenders = yMultiple()
                         spam = True
                         sent = 0
-                    if sent == 499:
-                        from_address,password = yMultiple()
+                    if sent == 500:
+                        from_address,password,numOfSenders = yMultiple()
                         spam = True
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
-            from_address,password = ySingle()
-            sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
-            while sent != 499:
-                yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+            from_address,password,numOfSenders = ySingle()
+            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
+            while sent != 500 and Sent < send:
+                try:
+                    yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                    if table:
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    else:
+                        print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
+                except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -447,40 +605,60 @@ try:
     # Outlook/Hotmail
     elif choice == "3":
         multiple = outlookInstruct()
+        multiple = validMultiple(multiple)
         if multiple == "1" or multiple.upper() == "YES":
-            from_address,password = oMultiple()
-            sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            from_address,password,numOfSenders = oMultiple()
+            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
-            while spam is True:
+            while spam is True and Sent < send:
                 if from_address == "" or from_address == "\n":
                     spam = False
                 else:
                     try:
-                        outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                        if table:
+                            print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        else:
+                            print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
-                        from_address,password = oMultiple()
+                        from_address,password,numOfSenders = oMultiple()
                         spam = True
                         sent = 0
-                    if sent == 499:
-                        from_address,password = oMultiple()
+                    if sent == 300:
+                        from_address,passwor,numOfSenders = oMultiple()
                         spam = True
                         sent = 0
         elif multiple == "2" or multiple.upper() == "NO":
-            from_address,password = oSingle()
-            sendSpeed,to_address,body,subject,length = structure()
-            print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
-            while sent != 499:
-                outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password)
-                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+            from_address,password,numOfSenders = oSingle()
+            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
+            if table:
+                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            else:
+                print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
+            while sent != 300 and Sent < send:
+                try:
+                    outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                    if table:
+                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    else:
+                        print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
+                except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
         else:
-            print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
+            print (bcolors.FAIL + "Invaid choice! Exiting..." + bcolors.ENDC)
             sys.exit()
     else:
-        print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
+        print (bcolors.FAIL + "Invaid choice! Exiting..." + bcolors.ENDC)
         sys.exit()
+
 except KeyboardInterrupt:
     print(bcolors.FAIL + "\nCancelled!" + bcolors.ENDC)
     sys.exit()
+
+# Add an option to give a submenu to user to choose from predefined recipient list
