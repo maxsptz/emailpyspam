@@ -181,6 +181,34 @@ def validGmail(from_addr,cipher):
         valid = True
     return valid
 
+def validYahoo(from_addr,cipher):
+    server = smtplib.SMTP("smtp.mail.yahoo.com", 587)
+    # Start TLS for security
+    server.starttls()
+    try:
+        server.login(from_addr, cipher)
+        server.quit()
+    except smtplib.SMTPAuthenticationError:
+        print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Try again" + bcolors.ENDC)
+        valid = False
+    else:
+        valid = True
+    return valid
+
+def validOutlook(from_addr,cipher):
+    server = smtplib.SMTP("smtp-mail.outlook.com", 587)
+    # Start TLS for security
+    server.starttls()
+    try:
+        server.login(from_addr, cipher)
+        server.quit()
+    except smtplib.SMTPAuthenticationError:
+        print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Try again" + bcolors.ENDC)
+        valid = False
+    else:
+        valid = True
+    return valid
+
 # Choose Mail Service
 
 def mailChoice():
@@ -230,7 +258,7 @@ def outlookInstruct():
     print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
-    "\n(Emails and passwords must be predefined in yahoo.txt and yahoopass.txt)"\
+    "\n(Emails and passwords must be predefined in outlook.txt and outlookpass.txt)"\
     "\n1) Yes"\
     "\n2) No"\
     + bcolors.ENDC)
@@ -342,17 +370,23 @@ def gSingle():
 # Send with limits (Yahoo)
 
 def ySingle():
-    from_addr = input(bcolors.OKGREEN + 'Your Yahoo Email: ' + bcolors.ENDC)
-    cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
+    valid = False
+    while not valid:
+        from_addr = input(bcolors.OKGREEN + 'Your Yahoo Email: ' + bcolors.ENDC)
+        cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
+        valid = validYahoo(from_addr,cipher)
     numOfSenders = 1
     return from_addr,cipher,numOfSenders
 
 # Send with limits (Outlook/Hotmail)
 
 def oSingle():
-    from_addr = input(bcolors.OKGREEN + 'Your Hotmail/Outlook Email: ' + bcolors.ENDC)
-    cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
-    numOfSenders = 1
+    valid = False
+    while not valid:
+        from_addr = input(bcolors.OKGREEN + 'Your Hotmail/Outlook Email: ' + bcolors.ENDC)
+        cipher = getpass.getpass(bcolors.OKGREEN + 'Password:' + bcolors.ENDC)
+        numOfSenders = 1
+        valid = validOutlook(from_addr,cipher)
     return from_addr,cipher,numOfSenders
 
 # Main structure (subject, body, etc.)
@@ -369,6 +403,7 @@ def structure(choice,numOfSenders):
             to_addr.append(addr)
     recipientNum = len (to_addr)
     recipientNum = validRecipientNum(recipientNum,choice)
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
         send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
