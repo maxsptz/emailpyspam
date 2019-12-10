@@ -138,21 +138,29 @@ def validSend(send,choice,multiple,recipientNum,numOfSenders):
         else:
             send = int (send)
             if send > 0:
-                if choice == "3":
-                    if (send * recipientNum) < (300 * numOfSenders):
-                        valid = True
-                    else:
-                        message = True
-                elif choice == "1" or choice == "2":
-                    if (send * recipientNum) < (500 * numOfSenders):
-                        valid = True
-                    else:
-                        message = True
+                if send % recipientNum == 0:
+                    if choice == "3":
+                        if (send * recipientNum) < (300 * numOfSenders):
+                            valid = True
+                        else:
+                            message = True
+                    elif choice == "1" or choice == "2":
+                        if (send * recipientNum) < (500 * numOfSenders):
+                            valid = True
+                        else:
+                            message = True
+                else:
+                    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
+                    print (bcolors.FAIL + "Amount can't be evenly distributed to recipients!"\
+                    "\ne.g. 5 emails can't be evenly distributed to 2 recipients" + bcolors.ENDC)
+                    time.sleep(1)
+                    send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
+                    valid = False
             else:
                 message = True
         if message:
             print (bcolors.FAIL + "Invalid amount!" + bcolors.ENDC)
-            print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+            print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
             time.sleep(1)
             send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
             valid = False
@@ -232,7 +240,7 @@ def gmailInstruct():
     print(bcolors.FAIL + "\nDISCLAIMER: To send emails with Gmail, you need to enable less secure apps:\n" + bcolors.ENDC)
     print(bcolors.URL + "https://myaccount.google.com/lesssecureapps" + bcolors.ENDC)
     print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of 500 emails per day per account" + bcolors.ENDC)
-    print(bcolors.FAIL + "Keep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(If so, emails and passwords must be predefined in gmail.txt and gmailpass.txt)"\
@@ -247,7 +255,7 @@ def gmailInstruct():
 def yahooInstruct():
     print(bcolors.FAIL + "\nDISCLAIMER: Yahoo has a limit of 100 recipients per email (this cannot be exceeded)." + bcolors.ENDC)
     print(bcolors.FAIL + "\nYahoo also has a limit of 500 emails per day per account." + bcolors.ENDC)
-    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(If so, emails and passwords must be predefined in yahoo.txt and yahoopass.txt)"\
@@ -262,7 +270,7 @@ def yahooInstruct():
 def outlookInstruct():
     print(bcolors.FAIL + "\nDISCLAIMER: Outlook has a limit of 100 recipients per email (this cannot be exceeded)." + bcolors.ENDC)
     print(bcolors.FAIL + "\nOutlook also has a limit of 300 emails per day per account (limit also depends on reputation of email address)." + bcolors.ENDC)
-    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(If so, emails and passwords must be predefined in outlook.txt and outlookpass.txt)"\
@@ -408,10 +416,8 @@ def structure(choice,numOfSenders):
             break
         else:
             to_addr.append(addr)
-    print (to_addr)
     recipientNum = len (to_addr)
     to_addr,recipientNum = validRecipientNum(to_addr,recipientNum,choice)
-    print (to_addr)
     print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
@@ -566,8 +572,10 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password,numOfSenders = gMultiple()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
-            if table:
+            if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            elif loadingBar and send != float ("inf"):
+                pbar = tqdm(total=(send/recipientNum), initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
@@ -577,8 +585,10 @@ try:
                 else:
                     try:
                         gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                        if table:
+                        if table and send == float ("inf"):
                             print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        elif loadingBar and send != float ("inf"):
+                            pbar.update(1)
                         else:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
@@ -590,13 +600,15 @@ try:
                         from_address,password,numOfSenders = gMultiple()
                         spam = True
                         sent = 0
+            if loadingBar and send != float ("inf"):
+                pbar.close()
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password,numOfSenders = gSingle()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             elif loadingBar and send != float ("inf"):
-                pbar = tqdm(total=send, initial=0)
+                pbar = tqdm(total=(send/recipientNum), initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 500 and Sent < send:
@@ -624,8 +636,10 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password,numOfSenders = yMultiple()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
-            if table:
+            if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            elif loadingBar and send != float ("inf"):
+                pbar = tqdm(total=(send/recipientNum), initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
@@ -635,8 +649,10 @@ try:
                 else:
                     try:
                         yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                        if table:
+                        if table and send == float ("inf"):
                             print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        elif loadingBar and send != float ("inf"):
+                            pbar.update(1)
                         else:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
@@ -648,13 +664,15 @@ try:
                         from_address,password,numOfSenders = yMultiple()
                         spam = True
                         sent = 0
+            if loadingBar and send != float ("inf"):
+                pbar.close()
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password,numOfSenders = ySingle()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             elif loadingBar and send != float ("inf"):
-                pbar = tqdm(total=send, initial=0)
+                pbar = tqdm(total=(send/recipientNum), initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 500 and Sent < send:
@@ -682,8 +700,10 @@ try:
         if multiple == "1" or multiple.upper() == "YES":
             from_address,password,numOfSenders = oMultiple()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
-            if table:
+            if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            elif loadingBar and send != float ("inf"):
+                pbar = tqdm(total=(send/recipientNum), initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             spam = True
@@ -693,8 +713,10 @@ try:
                 else:
                     try:
                         outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                        if table:
+                        if table and send == float ("inf"):
                             print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                        elif loadingBar and send != float ("inf"):
+                            pbar.update(1)
                         else:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
@@ -706,6 +728,8 @@ try:
                         from_address,passwor,numOfSenders = oMultiple()
                         spam = True
                         sent = 0
+            if loadingBar and send != float ("inf"):
+                pbar.close()
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password,numOfSenders = oSingle()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
