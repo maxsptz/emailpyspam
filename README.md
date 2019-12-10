@@ -48,6 +48,36 @@ Start the program
 ```
 python3 emailspam.py
 ```
+#### Windows (Command Prompt)
+Clone the repository
+
+```
+git clone https://github.com/Curioo/emailpyspam.git
+```
+
+Install required libraries
+
+```
+pip install -r requirements.txt
+```
+
+Navigate into main directory
+
+```
+cd emailspam/
+```
+
+Navigate into sub-directory
+
+```
+cd main/
+```
+
+Start the program
+
+```
+python emailspam
+```
 
 ## Usage
 
