@@ -12,6 +12,12 @@ except ModuleNotFoundError:
     table = False
 else:
     table = True
+try:
+    from tqdm import tqdm
+except ModuleNotFoundError:
+    loadingBar = False
+else:
+    loadingBar = True
 
 # Colour Scheme
 
@@ -224,13 +230,13 @@ def mailChoice():
 # Gmail DISCLAIMER
 
 def gmailInstruct():
-    print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of emails per day per account" + bcolors.ENDC)
     print(bcolors.FAIL + "\nDISCLAIMER: To send emails with Gmail, you need to enable less secure apps:\n" + bcolors.ENDC)
     print(bcolors.URL + "https://myaccount.google.com/lesssecureapps" + bcolors.ENDC)
-    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
+    print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of 500 emails per day per account" + bcolors.ENDC)
+    print(bcolors.FAIL + "Keep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
-    "\n(Emails and passwords must be predefined in gmail.txt and gmailpass.txt)"\
+    "\n(If so, emails and passwords must be predefined in gmail.txt and gmailpass.txt)"\
     "\n1) Yes"\
     "\n2) No"\
     + bcolors.ENDC)
@@ -245,7 +251,7 @@ def yahooInstruct():
     print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
-    "\n(Emails and passwords must be predefined in yahoo.txt and yahoopass.txt)"\
+    "\n(If so, emails and passwords must be predefined in yahoo.txt and yahoopass.txt)"\
     "\n1) Yes"\
     "\n2) No"\
     + bcolors.ENDC)
@@ -260,7 +266,7 @@ def outlookInstruct():
     print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
-    "\n(Emails and passwords must be predefined in outlook.txt and outlookpass.txt)"\
+    "\n(If so, emails and passwords must be predefined in outlook.txt and outlookpass.txt)"\
     "\n1) Yes"\
     "\n2) No"\
     + bcolors.ENDC)
@@ -586,20 +592,26 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password,numOfSenders = gSingle()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
-            if table:
+            if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            elif loadingBar and send != float ("inf"):
+                pbar = tqdm(total=send, initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 500 and Sent < send:
                 try:
                     gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                    if table:
+                    if table and send == float ("inf"):
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    elif loadingBar and send != float ("inf"):
+                        pbar.update(1)
                     else:
                         print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
                     sys.exit()
+            if loadingBar and send != float ("inf"):
+                pbar.close()
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -638,20 +650,26 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password,numOfSenders = ySingle()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
-            if table:
+            if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            elif loadingBar and send != float ("inf"):
+                pbar = tqdm(total=send, initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 500 and Sent < send:
                 try:
                     yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                    if table:
+                    if table and send == float ("inf"):
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    elif loadingBar and send != float ("inf"):
+                        pbar.update(1)
                     else:
                         print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
                     sys.exit()
+            if loadingBar and send != float ("inf"):
+                pbar.close()
         else:
             print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
             sys.exit()
@@ -690,20 +708,26 @@ try:
         elif multiple == "2" or multiple.upper() == "NO":
             from_address,password,numOfSenders = oSingle()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
-            if table:
+            if table and send == float ("inf"):
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+            elif loadingBar and send != float ("inf"):
+                pbar = tqdm(total=send, initial=0)
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
             while sent != 300 and Sent < send:
                 try:
                     outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                    if table:
+                    if table and send == float ("inf"):
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                    elif loadingBar and send != float ("inf"):
+                        pbar.update(1)
                     else:
                         print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
                     sys.exit()
+            if loadingBar and send != float ("inf"):
+                pbar.close()
         else:
             print (bcolors.FAIL + "Invaid choice! Exiting..." + bcolors.ENDC)
             sys.exit()
