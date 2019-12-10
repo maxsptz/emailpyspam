@@ -96,8 +96,7 @@ def validMultiple(mult):
             mult = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
     return mult
 
-def validRecipientNum(recipientNum,choice):
-    global to_addr
+def validRecipientNum(to_addr,recipientNum,choice):
     valid = False
     while not valid:
         message = False
@@ -126,7 +125,7 @@ def validRecipientNum(recipientNum,choice):
                     to_addr.append(addr)
             recipientNum = len (to_addr)
             valid = False
-    return recipientNum
+    return to_addr,recipientNum
 
 def validSend(send,choice,multiple,recipientNum,numOfSenders):
     valid = False
@@ -409,8 +408,10 @@ def structure(choice,numOfSenders):
             break
         else:
             to_addr.append(addr)
+    print (to_addr)
     recipientNum = len (to_addr)
-    recipientNum = validRecipientNum(recipientNum,choice)
+    to_addr,recipientNum = validRecipientNum(to_addr,recipientNum,choice)
+    print (to_addr)
     print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
