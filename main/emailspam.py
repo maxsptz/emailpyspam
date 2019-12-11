@@ -65,7 +65,10 @@ class bcolors:
 # Functions
 
 def banner():
-    os.system('clear')
+    if sys.platform.startswith('win32'):
+        os.system('cls')
+    else:
+        os.system('clear')
     try:
         file1 = open('banner.txt', 'r')
         print(' ')
