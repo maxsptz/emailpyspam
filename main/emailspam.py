@@ -117,11 +117,11 @@ def validRecipientNum(to_addr,recipientNum,choice):
         else:
             message = True
         if message:
-            print (bcolors.FAIL + "Invalid number of recipients! You must start over." + bcolors.ENDC)
-            time.sleep(1)
+            print (bcolors.FAIL + "Invalid number of recipients! You must start over.\n" + bcolors.ENDC)
+            time.sleep(0.5)
             to_addr = []
             while True:
-                addr = input(bcolors.OKGREEN + "\nType in the recipient(s), hit enter to finish: " + bcolors.ENDC)
+                addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish: " + bcolors.ENDC)
                 if not addr:
                     break
                 else:
