@@ -596,9 +596,11 @@ try:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
+                        from_address,password,numOfSenders = gMultiple()
+                        spam = True
+                        sent = 0
                     except smtplib.SMTPDataError:
                         print ("Limit reached. Switching emails...")
-                        sys.exit()
                         from_address,password,numOfSenders = gMultiple()
                         spam = True
                         sent = 0
@@ -666,9 +668,11 @@ try:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
+                        from_address,password,numOfSenders = yMultiple()
+                        spam = True
+                        sent = 0
                     except smtplib.SMTPDataError:
                         print ("Limit reached. Switching emails...")
-                        sys.exit()
                         from_address,password,numOfSenders = yMultiple()
                         spam = True
                         sent = 0
@@ -739,6 +743,11 @@ try:
                         from_address,password,numOfSenders = oMultiple()
                         spam = True
                         sent = 0
+                    except smtplib.SMTPDataError:
+                        print ("Limit reached. Switching emails...")
+                        from_address,password,numOfSenders = oMultiple()
+                        spam = True
+                        sent = 0
                     if sent == 300:
                         from_address,passwor,numOfSenders = oMultiple()
                         spam = True
@@ -764,6 +773,9 @@ try:
                     else:
                         print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
+                except smtplib.SMTPDataError:
                     print ("Limit reached. Exiting...")
                     sys.exit()
             if loadingBar and send != float ("inf"):
