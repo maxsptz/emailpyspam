@@ -1,3 +1,5 @@
+#LEGACY BUILD (DEPRECIATED)
+
 ![GitHub](https://img.shields.io/github/license/curioo/emailpyspam)
 ![Build Status](https://img.shields.io/badge/Build-Passing-green)
 ![GitHub top language](https://img.shields.io/github/languages/top/curioo/emailpyspam)
