@@ -577,7 +577,7 @@ try:
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if loadingBar and send != float ("inf"):
                 pbar = tqdm(total=(send/recipientNum))
-            elif table:
+            elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
@@ -590,12 +590,15 @@ try:
                         gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         if loadingBar and send != float ("inf"):
                             pbar.update(1)
-                        elif table:
+                        elif table and recipientNum <= 2:
                             print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                         else:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
+                    except smtplib.SMTPDataError:
+                        print ("Limit reached. Switching emails...")
+                        sys.exit()
                         from_address,password,numOfSenders = gMultiple()
                         spam = True
                         sent = 0
@@ -610,7 +613,7 @@ try:
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if loadingBar and send != float ("inf"):
                 pbar = tqdm(total=(send/recipientNum))
-            elif table:
+            elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
@@ -619,11 +622,14 @@ try:
                     gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                     if loadingBar and send != float ("inf"):
                         pbar.update(1)
-                    elif table:
+                    elif table and recipientNum <= 2:
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     else:
                         print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
+                except smtplib.SMTPDataError:
                     print ("Limit reached. Exiting...")
                     sys.exit()
             if loadingBar and send != float ("inf"):
@@ -641,7 +647,7 @@ try:
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if loadingBar and send != float ("inf"):
                 pbar = tqdm(total=(send/recipientNum))
-            elif table:
+            elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
@@ -654,12 +660,15 @@ try:
                         yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         if loadingBar and send != float ("inf"):
                             pbar.update(1)
-                        elif table:
+                        elif table and recipientNum <= 2:
                             print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                         else:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
+                    except smtplib.SMTPDataError:
+                        print ("Limit reached. Switching emails...")
+                        sys.exit()
                         from_address,password,numOfSenders = yMultiple()
                         spam = True
                         sent = 0
@@ -674,7 +683,7 @@ try:
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if loadingBar and send != float ("inf"):
                 pbar = tqdm(total=(send/recipientNum))
-            elif table:
+            elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
@@ -683,11 +692,14 @@ try:
                     yahooSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                     if loadingBar and send != float ("inf"):
                         pbar.update(1)
-                    elif table:
+                    elif table and recipientNum <= 2:
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     else:
                         print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
                 except smtplib.SMTPSenderRefused:
+                    print ("Limit reached. Exiting...")
+                    sys.exit()
+                except smtplib.SMTPDataError:
                     print ("Limit reached. Exiting...")
                     sys.exit()
             if loadingBar and send != float ("inf"):
@@ -705,7 +717,7 @@ try:
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if loadingBar and send != float ("inf"):
                 pbar = tqdm(total=(send/recipientNum))
-            elif table:
+            elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
@@ -718,7 +730,7 @@ try:
                         outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         if loadingBar and send != float ("inf"):
                             pbar.update(1)
-                        elif table:
+                        elif table and recipientNum <= 2:
                             print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                         else:
                             print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
@@ -738,7 +750,7 @@ try:
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(choice,numOfSenders)
             if loadingBar and send != float ("inf"):
                 pbar = tqdm(total=(send/recipientNum))
-            elif table:
+            elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
                 print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
@@ -747,7 +759,7 @@ try:
                     outlookSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                     if loadingBar and send != float ("inf"):
                         pbar.update(1)
-                    elif table:
+                    elif table and recipientNum <= 2:
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     else:
                         print ("\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent)
