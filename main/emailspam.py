@@ -470,8 +470,6 @@ def structure(choice,numOfSenders):
 def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
         global sent
         global Sent
-        sent += (1*recipientNum)
-        Sent += (1*recipientNum)
         number = random.randint(0, 10000)
         subject = subject[0:length] + " (" + str(number) + ")"
         # Construct email
@@ -488,6 +486,8 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
             server.login(from_addr, cipher)
             server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
             server.quit()
+            sent += (1*recipientNum)
+            Sent += (1*recipientNum)
             time.sleep(speed)
         except smtplib.SMTPAuthenticationError:
             print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
@@ -501,8 +501,6 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
 def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
     global sent
     global Sent
-    sent += (1*recipientNum)
-    Sent += (1*recipientNum)
     number = random.randint(0, 10000)
     subject = subject[0:length] + " (" + str(number) + ")"
     # Construct email
@@ -519,6 +517,8 @@ def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
         server.login(from_addr, cipher)
         server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
         server.quit()
+        sent += (1*recipientNum)
+        Sent += (1*recipientNum)
         time.sleep(speed)
     except smtplib.SMTPAuthenticationError:
         print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
@@ -532,8 +532,6 @@ def yahooSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
 def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
     global sent
     global Sent
-    sent += (1*recipientNum)
-    Sent += (1*recipientNum)
     number = random.randint(0, 10000)
     subject = subject[0:length] + " (" + str(number) + ")"
     # Construct email
@@ -550,6 +548,8 @@ def outlookSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum)
         server.login(from_addr, cipher)
         server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
         server.quit()
+        sent += (1*recipientNum)
+        Sent += (1*recipientNum)
         time.sleep(speed)
     except smtplib.SMTPAuthenticationError:
         print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
