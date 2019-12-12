@@ -84,7 +84,7 @@ def validChoice(ch):
             valid = True
         else:
             print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
-            time.sleep(1)
+            time.sleep(0.5)
             ch = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
     return ch
 
@@ -95,7 +95,7 @@ def validMultiple(mult):
             valid = True
         else:
             print (bcolors.FAIL + "Invalid choice!" + bcolors.ENDC)
-            time.sleep(1)
+            time.sleep(0.5)
             mult = input(bcolors.FAIL + "Enter a valid choice: " + bcolors.ENDC)
     return mult
 
@@ -156,7 +156,7 @@ def validSend(send,choice,multiple,recipientNum,numOfSenders):
                     print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
                     print (bcolors.FAIL + "Amount can't be evenly distributed to recipients!"\
                     "\ne.g. 5 emails can't be evenly distributed to 2 recipients" + bcolors.ENDC)
-                    time.sleep(1)
+                    time.sleep(0.5)
                     send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
                     valid = False
             else:
@@ -164,7 +164,7 @@ def validSend(send,choice,multiple,recipientNum,numOfSenders):
         if message:
             print (bcolors.FAIL + "Invalid amount!" + bcolors.ENDC)
             print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
-            time.sleep(1)
+            time.sleep(0.5)
             send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
             valid = False
     return send
@@ -176,7 +176,7 @@ def validSpeed(s):
             float (s)
         except ValueError:
             print (bcolors.FAIL + "Invalid number for speed!" + bcolors.ENDC)
-            time.sleep(1)
+            time.sleep(0.5)
             s = input(bcolors.FAIL + "At what interval should the emails get sent out? (seconds): " + bcolors.ENDC)
         else:
             s = float (s)
