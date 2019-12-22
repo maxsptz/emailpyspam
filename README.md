@@ -83,11 +83,13 @@ python emailspam
 
 ## Usage
 
-You have the ability to use the program in two ways.
+You have the ability to use the program in three ways.
 * Simple
   * Type an email and password in at the beginning
 * Extended
   * Have the program access a list of emails and passwords to access once an email has been locked
+* Single Command
+ * Run the program with options given by the user when the file is run 
 ## Screenshots
 
 Welcome message:
