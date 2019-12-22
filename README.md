@@ -94,8 +94,7 @@ You have the ability to use the program in three ways.
 * Extended
   * Have the program access a list of emails and passwords to access once an email has been locked
 * Single Command
-  * Run the program with options given by the user when the file is run 
-  See your options with
+  * Run the program with options given by the user when the file is run. See your options with:
   ```
   python3 emailspam.py --help
   ```
