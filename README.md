@@ -48,7 +48,10 @@ Start the program
 ```
 python3 emailspam.py
 ```
-
+Or
+```
+python3 emailspam.py -i -t target@email.com -f youremail@gmail.com -d intervalbetweenemails -p passwordforyouremail -s subject -b body(\ before every space) -n numOfEmails
+```
 
 #### Windows (Command Prompt)
 Clone the repository
@@ -80,6 +83,8 @@ Start the program
 ```
 python emailspam
 ```
+Or
+
 
 ## Usage
 
@@ -89,7 +94,9 @@ You have the ability to use the program in three ways.
 * Extended
   * Have the program access a list of emails and passwords to access once an email has been locked
 * Single Command
- * Run the program with options given by the user when the file is run 
+  * Run the program with options given by the user when the file is run 
+  
+
 ## Screenshots
 
 Welcome message:
