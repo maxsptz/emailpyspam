@@ -554,7 +554,8 @@ def getops(): #Get options and turn off interactive mode
     parser.add_option('-p', '--password', type='string', dest='password', help='the password for the email account you are spamming from')
     parser.add_option('-s', '--subject', type='string', dest='subject', help='the subject of the email you want to spam')
     parser.add_option('-b', '--body', type='string', dest='body', help='the actual message inside the email you wish to spam')
-    parser.add_option('-n', '--number', dest='recipientNum', help='the number of emails you want to send')
+    parser.add_option('-e', '--num-of-emails', dest='recipientNum', help='the number of email addresses you want to send from')
+    parser.add_option('-n', '--num', type='int', dest='send', help='the number of emails you wish to send')
     (options, arguments) = parser.parse_args()
     return options
 
@@ -622,11 +623,13 @@ try:
                 sys.exit()
 
     elif(ops.interactive == True):
+        numsent = 0
         length = len(ops.subject) #find the length of the subject, in order to provide a seed for the random number generator in gmailSpam()
         recipientNum = int(ops.recipientNum)# set this variable to an integer
         if recipientNum <= 500:
-            gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password, recipientNum)# run the spam script with the given options
-
+            while numsent <= ops.send:
+                gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password, recipientNum)# run the spam script with the given options
+                numsent = numsent + 1
     # Yahoo
     elif choice == "2":
         multiple = yahooInstruct()
