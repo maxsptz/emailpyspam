@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <title>Email Spmmer</title>
+	<style>
+		p {
+        	color: black;
+        	text-align: left;
+        	font-family: Arial;
+        	font-size: 15px;
+		}
+		input[type=text] {
+		box-sizing: border-box;
+		}
+		.header {
+		padding: 10px 16px;
+		background: #000000;
+		color: #f1f1f1;
+		}
+		h2{
+		color: white;
+		text-align: center;
+		font-family: Arial;
+		}
+		.collapsible {
+  		background-color: #eee;
+  		color: #444;
+  		cursor: pointer;
+  		padding: 18px;
+  		width: 100%;
+  		border: none;
+  		text-align: left;
+  		outline: none;
+  		font-size: 15px;
+		}
+		.active, .collapsible:hover {
+  		background-color: #ccc;
+		}
+		.dropdown {
+ 		padding: 0 18px;
+ 		display: none;
+ 	 	overflow: hidden;
+ 	 	background-color: #ccc;
+		}
+	</style>
+    </head>
+
+	<div class="header" id="header">
+		<h2>The Email Spammer</h2>
+	</div>
+
+    <body bgcolor="#FFFFFF">
+	<br>
+	<br>
+	<br>
+	<p>This is the webapp running as an interface for the <a href="https://github.com/Curioo/emailpyspam">Email Spammer on Github</a>, a Python 3 program that
+	is written by Max Spitzer and Franco Aparicio, with extra features and this web application written by Ethan Moore. The code can also be downloaded
+	 <a href="emailpyspam/main/emailspam.py">here</a>. If you have any issues send it to the github and we will address it as soon as possible</p>
+	<br>
+	<br>
+	<br>
+	<button type="button" class="collapsible">Use the Email Spammer</button>
+	<div class="dropdown">
+	<form action="emailpyspam/main/run.php" method="post">
+		<p>recipient</p> <input type="text" align="center" name="recipient" value=""/>
+		<br>
+		<p>spammer email</p> <input type="text" name="fromemail" value=""/>
+		<br>
+		<p>number of spammer emails</p> <input type="text" name="enum" value=""/>
+		<br>
+		<p>password (your email password)</p> <input type="password" name="password" value=""/>
+		<br>
+		<p>subject</p> <input type="text" name="subject" value=""/>
+		<br>
+		<p>body (put \ before every space)</p> <input type="text" name="body" value=""/>
+		<br>
+		<p>interval between emails (seconds)</p> <input type="text" name="interval" value=""/> 		
+		<br>
+		<p>number of emails</p> <input type="text" name="num" value=""/>
+		<br>
+		<input type="submit" name="submit" value="SPAM" />
+        </form>
+	</div>
+    </body>
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+	coll[i].addEventListener("click", function() {
+		this.classList.toggle("active");
+		var content = this.nextElementSibling;
+		if (content.style.display === "block") {
+			content.style.display = "none";
+		} else {
+			content.style.display = "block";
+		}
+	});
+} 
+</script>
+</html>
