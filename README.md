@@ -172,6 +172,10 @@ If you have anny issues or questions setting up the webserver please post them i
 
 In the future you can expect intructions for setting up the webserver on MacOS and possibly windows, with the other possibility of scripts to automate the process for a more user friendly setup for a webserver
 
+## Warning
+
+The html directory contains a copy of the emailspam code, however avoid putting information in the information text files (gmail.txt, gmailpass.txt, etc.) becuase they can be read from the web browser. If you wish to use the information text files, keep it off the webdirectory.  
+
 ## Screenshots
 
 Welcome message:
