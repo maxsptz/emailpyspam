@@ -99,6 +99,13 @@ You have the ability to use the program in three ways.
   python3 emailspam.py --help
   ```
   
+  
+## Webapp
+
+This repo also contains code for a website where you can run the code in a user friendly interface. This code for the webserver has been tested on Manjaro and Debian, with apache running the webserver. To achieve this you will need to install php, apache and of course all the requirements for the python. 
+
+  
+  
 
 ## Screenshots
 
