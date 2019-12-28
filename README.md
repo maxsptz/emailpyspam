@@ -102,11 +102,37 @@ You have the ability to use the program in three ways.
   
 ## Webapp
 
-This repo also contains code for a website where you can run the code in a user friendly interface. This code for the webserver has been tested on Manjaro and Debian, with apache running the webserver. To achieve this you will need to install php, apache and of course all the requirements for the python. 
+This repo also contains code for a website where you can run the code in a user friendly interface. This code for the webserver has been tested on Manjaro and Debian, with apache running the webserver It uses php to execute the python and html and java for the webpage. To achieve this you will need to install php, apache and of course all the requirements for the python. 
 
+* On debian
+  Install the apache webserver as well as php
+  ```
+  sudo apt install apache && sudo apt install php
+  ```
+  Copy the html folder to the webserver location
+  ```
+  sudo cp -r html/. /var/www/html
+  ```
+  Enable php on apache2
+  Open the apache2 config file with:
+  ```
+  sudo nano /etc/apache2/apache2.conf
+  ```
+  then add the following lines 
+  ```
+  <FilesMatch \.php$>
+   SetHandler application/x-httpd-php
+  </FilesMatch>
+  ```
+  Certain modules will need to be disabled for the apache webserver 
+  ```
+  sudo a2dismod mpm_event && sudo a2enmod mpm_prefork && sudo a2enmod php7.0
+  ```
+  Restart the webserver
+  ```
+  sudo service apache2 restart
+  ```
   
-  
-
 ## Screenshots
 
 Welcome message:
