@@ -100,7 +100,7 @@ You have the ability to use the program in three ways.
   ```
   
   
-## Webapp
+### Webapp
 
 This repo also contains code for a website where you can run the code in a user friendly interface. This code for the webserver has been tested on Manjaro and Debian, with apache running the webserver It uses php to execute the python and html and java for the webpage. To achieve this you will need to install php, apache and of course all the requirements for the python. 
 
@@ -132,13 +132,56 @@ This repo also contains code for a website where you can run the code in a user 
   ```
   sudo service apache2 restart
   ```
+
+* On manjaro
+  Install apache2 and php 
+  ```
+  sudo pacman -S apache php php-apache
+  ```
+  Edit the configuration file for apache 
+  ```
+  sudo nano /etc/httpd/conf/httpd.conf
+  ```
+  and comment out this line
+  ```
+  #LoadModule mpm_event_module modules/mod_mpm_event.so
+  ```
+  un comment this line
+  ```
+  LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+  ```
+  then add the following lines at the end
+  ```
+  LoadModule php7_module modules/libphp7.so
+  AddHandler php7-script php
+  Include conf/extra/php7_module.conf
+  ```
+  restart the apache webserver
+  ```
+  sudo systemctl restart httpd
+  ```
+  If the webserver was not already running start it with
+  ```
+  sudo systemctl start httpd
+  ```
+  ```
+  sudo systemctl enable httpd
+  ```
   
+If you have anny issues or questions setting up the webserver please post them in the issues section of the repository and we will address them as soon as possible.
+
+In the future you can expect intructions for setting up the webserver on MacOS and possibly windows, with the other possibility of scripts to automate the process for a more user friendly setup for a webserver
+
 ## Screenshots
 
 Welcome message:
 
 
 ![Image of welcome message](https://i.imgur.com/G1X8r49.png)
+
+Webserver:
+
+
 
 ## Built With
 
