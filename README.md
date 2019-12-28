@@ -181,9 +181,9 @@ Welcome message:
 
 Webserver:
 
-![Image 1 of the web server](https://imgur.com/a/YgBbbb4)
+![Image 1 of the web server](https://i.imgur.com/vKq4cdG.png)
 
-![Image 2 of the web server](https://imgur.com/e9VnUxn)
+![Image 2 of the web server](https://i.imgur.com/e9VnUxn.png)
 
 
 
