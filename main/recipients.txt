@@ -1,0 +1,4 @@
+recipientLists = {
+list-name : ['email,email,email,']
+list-name : ['email,email,email,']
+}
