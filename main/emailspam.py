@@ -645,5 +645,3 @@ try:
 except KeyboardInterrupt:
     print(bcolors.FAIL + "\nCancelled!" + bcolors.ENDC)
     sys.exit()
-
-# Add an option to give a submenu to user to choose from predefined recipient list
