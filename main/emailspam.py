@@ -300,16 +300,19 @@ def recipientEditor(recipientLists):
                     else:
                         break
         elif option == "4":
-            keys = sorted (recipientLists)
-            for list in range (len (keys)):
-                print ("")
-                k = keys[list]
-                print (bcolors.OKGREEN + k,"\n-",end = "" )
-                print (("-")*len (k),end = "")
-                print ("-" + bcolors.ENDC)
-                for entry in range (len (recipientLists[k])):
-                    print (bcolors.OKGREEN + recipientLists[k][entry] + bcolors.ENDC)
-            time.sleep(1.5)
+            if len (recipientLists) == 0:
+                    print (bcolors.FAIL + "\nYou don't have any saved lists yet!\n" + bcolors.ENDC)
+            else:
+                keys = sorted (recipientLists)
+                for list in range (len (keys)):
+                    print ("")
+                    k = keys[list]
+                    print (bcolors.OKGREEN + k,"\n-",end = "" )
+                    print (("-")*len (k),end = "")
+                    print ("-" + bcolors.ENDC)
+                    for entry in range (len (recipientLists[k])):
+                        print (bcolors.OKGREEN + recipientLists[k][entry] + bcolors.ENDC)
+                time.sleep(1.5)
         else:
             print (bcolors.FAIL + "\nInvaid choice!\n" + bcolors.ENDC)
         time.sleep(0.5)
@@ -538,19 +541,29 @@ try:
     banner()
     choice = mailChoice()
     choice = validChoice(choice)
-    recipientLists = {}
-    f = open("recipientLists.txt", "r")
-    for l in f:
-        line = l.split(":")
-        line.remove ("\n")
-        values = []
-        key = line[0]
-        line.remove (key)
-        for v in range (len (line)):
-            val = line[v]
-            values.append (val)
-        recipientLists[key] = values
-    f.close()
+    try:
+        recipientLists = {}
+        f = open("recipientLists.txt", "r")
+        for l in f:
+            line = l.split(":")
+            line.remove ("\n")
+            values = []
+            key = line[0]
+            line.remove (key)
+            for v in range (len (line)):
+                val = line[v]
+                values.append (val)
+            recipientLists[key] = values
+        f.close()
+    except IOError:
+        recipientLists = {}
+        f = open ("recipientLists.txt", "w")
+        for thing in range (len ((sorted (recipientLists)))):
+            f.write (sorted (recipientLists)[thing] + ":")
+            for things in range (len (recipientLists[sorted (recipientLists)[thing]])):
+                f.write (recipientLists[sorted (recipientLists)[thing]][things] + ":")
+            f.write ("\n")
+        f.close()
     while choice == "#":
         recipientLists = recipientEditor(recipientLists)
         choice = mailChoice()
