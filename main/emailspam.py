@@ -161,12 +161,11 @@ def validSend(send,multiple,recipientNum,numOfSenders):
             send = int (send)
             if send > 0:
                 if send % recipientNum == 0:
-                    if (send * recipientNum) < (500 * numOfSenders):
+                    if (send) < (500 * numOfSenders):
                         valid = True
                     else:
                         message = True
                 else:
-                    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
                     print (bcolors.FAIL + "Amount can't be evenly distributed to recipients!"\
                     "\ne.g. 5 emails can't be evenly distributed to 2 recipients" + bcolors.ENDC)
                     time.sleep(0.5)
@@ -176,7 +175,6 @@ def validSend(send,multiple,recipientNum,numOfSenders):
                 message = True
         if message:
             print (bcolors.FAIL + "Invalid amount!" + bcolors.ENDC)
-            print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
             time.sleep(0.5)
             send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
             valid = False
@@ -318,7 +316,8 @@ def recipientEditor(recipientLists):
                     print ("\n" + bcolors.OKGREEN + wantDel + ":",end = " ")
                     print (recipientLists[wantDel])
                     print ("" + bcolors.ENDC,end = "")
-                    sure = input(bcolors.REDBG + "\nAre you sure? (Y/N): " + bcolors.ENDC)
+                    print (bcolors.REDBG + "\nAre you sure? (Y/N):" + bcolors.ENDC, end = " ")
+                    sure = input ()
                     if sure.upper() == "Y":
                         del recipientLists[wantDel]
                         saveRescipientLists()
@@ -354,8 +353,16 @@ def recipientEditor(recipientLists):
 
 def listSelector(recipientLists):
     if len (recipientLists) == 0:
-            print (bcolors.FAIL + "\nYou don't have any saved lists yet!\n" + bcolors.ENDC)
+            print (bcolors.FAIL + "\nYou don't have any saved lists yet.\n" + bcolors.ENDC)
+            openEditor = input (bcolors.GREEN + "Would you like to enter the recipient list editor? (Y/N): " + bcolors.ENDC)
+            if openEditor.upper() == "Y":
+                recipientLists = recipientEditor(recipientLists)
+                Continue = True
+            else:
+                Continue = False
     else:
+        Continue = True
+    if Continue:
         wantUse = input (bcolors.OKGREEN + "\nEnter the name of the list you would like to use (or \"#\" to show all existing lists): " + bcolors.ENDC)
         while wantUse == "#":
             keys = sorted (recipientLists)
@@ -375,12 +382,14 @@ def listSelector(recipientLists):
             print ("\n" + bcolors.OKGREEN + wantUse + ":",end = " ")
             print (recipientLists[wantUse])
             print ("" + bcolors.ENDC,end = "")
-            sure = input (bcolors.REDBG + "\nAre you sure? (Y/N): ")
-            print(bcolors.ENDC + "", end = "")
+            print (bcolors.REDBG + "\nAre you sure? (Y/N):" + bcolors.ENDC, end = " ")
+            sure = input ()
             if sure.upper() == "Y":
                 recipients = recipientLists[wantUse]
             else:
                 recipients = "normal"
+    else:
+        recipients = "normal"
     return recipients
 
 # Choose Mail Service
@@ -411,7 +420,6 @@ def gmailInstruct():
     print(bcolors.FAIL + "\nDISCLAIMER: To send emails with Gmail, you need to enable less secure apps:\n" + bcolors.ENDC)
     print(bcolors.URL + "https://myaccount.google.com/lesssecureapps" + bcolors.ENDC)
     print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of 500 emails per day per account" + bcolors.ENDC)
-    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(If so, emails and passwords must be predefined in gmail.txt and gmailpass.txt)"\
@@ -468,9 +476,15 @@ def structure(numOfSenders,recipientLists):
     to_addr = []
     addr = ""
     number = random.randint(0, 10000)
+    cnt = 0
     while True:
-        addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish (or \"#\" to use a predefined recipient list): " + bcolors.ENDC)
-        if addr == "#":
+        if cnt == 0:
+            addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish (or \"#\" to use a predefined recipient list): " + bcolors.ENDC)
+            cnt += 1
+        else:
+            addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish: " + bcolors.ENDC)
+            cnt += 1
+        if addr == "#" and cnt == 1:
             recipients = listSelector(recipientLists)
             if recipients != "normal":
                 to_addr = recipients
@@ -494,7 +508,6 @@ def structure(numOfSenders,recipientLists):
             to_addr.append(addr)
     recipientNum = len (to_addr)
     to_addr,recipientNum = validRecipientNum(to_addr,recipientNum)
-    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
         send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
@@ -559,8 +572,8 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
             server.login(from_addr, cipher)
             server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
             server.quit()
-            sent += (1*recipientNum)
-            Sent += (1*recipientNum)
+            sent += (1)
+            Sent += (1)
             time.sleep(speed)
         except smtplib.SMTPAuthenticationError:
             print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
