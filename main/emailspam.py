@@ -356,6 +356,10 @@ def listSelector(recipientLists):
             print (bcolors.FAIL + "\nYou don't have any saved lists yet.\n" + bcolors.ENDC)
             openEditor = input (bcolors.GREEN + "Would you like to enter the recipient list editor? (Y/N): " + bcolors.ENDC)
             if openEditor.upper() == "Y":
+                if sys.platform.startswith('win32'):
+                    os.system('cls')
+                else:
+                    os.system('clear')
                 recipientLists = recipientEditor(recipientLists)
                 Continue = True
             else:
@@ -623,7 +627,7 @@ try:
             from_address,password,numOfSenders = gMultiple()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
             if loadingBar and send != float ("inf"):
-                pbar = tqdm(total=(send/recipientNum))
+                pbar = tqdm(total=(send))
             elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
@@ -661,7 +665,7 @@ try:
             from_address,password,numOfSenders = gSingle()
             sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
             if loadingBar and send != float ("inf"):
-                pbar = tqdm(total=(send/recipientNum))
+                pbar = tqdm(total=(send))
             elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
