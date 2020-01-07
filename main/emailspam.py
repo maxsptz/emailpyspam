@@ -427,8 +427,7 @@ def gMultiple():
     global emailnum
     global passnum
     try:
-        fpath = os.path.join(src,"gmail.txt")
-        file = open(fpath, "r")
+        file = open("gmail.txt", "r")
         fileStuff = file.readline()
         gmail = fileStuff.split(",")
         emailnum += 1
@@ -441,8 +440,7 @@ def gMultiple():
         print (bcolors.FAIL + "gmail.txt not found! Exiting..." + bcolors.ENDC)
         sys.exit()
     try:
-        fpath = os.path.join(src,"gmailpass.txt")
-        passfile = open(fpath, "r")
+        passfile = open("gmailpass.txt", "r")
         passFileStuff = passFile.readline()
         passThing = passFileStuff.split(",")
         passnum += 1
