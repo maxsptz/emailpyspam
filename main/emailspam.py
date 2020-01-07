@@ -81,11 +81,11 @@ def resize():
             else:
                 lin += str (cmdsize[c])
     if sys.platform.startswith('win32'):
-        if col < "119" or lin < "35":
-            os.system('mode con:cols=119 lines=35')
+        if col < "123" or lin < "35":
+            os.system('mode con:cols=123 lines=35')
     else:
-        if col < "119" or lin < "49":
-            os.system("printf '\e[8;49;119t'")
+        if col < "123" or lin < "49":
+            os.system("printf '\e[8;49;123t'")
 
 def banner():
     if sys.platform.startswith('win32'):
