@@ -440,7 +440,7 @@ def gMultiple():
         print (bcolors.FAIL + "gmail.txt not found! Exiting..." + bcolors.ENDC)
         sys.exit()
     try:
-        passfile = open("gmailpass.txt", "r")
+        passFile = open("gmailpass.txt", "r")
         passFileStuff = passFile.readline()
         passThing = passFileStuff.split(",")
         passnum += 1
