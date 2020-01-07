@@ -63,6 +63,29 @@ class bcolors:
     REDBG2    = '\33[101m'
 
 # Functions
+def resize():
+    cmdsize = os.get_terminal_size()
+    num = 0
+    col = ""
+    lin = ""
+    for c in range (len (cmdsize)):
+        try:
+            if cmdsize[c] == "=":
+                num += 1
+            int (cmdsize[c])
+        except ValueError:
+            "Placeholder"
+        else:
+            if num == 1:
+                col += str (cmdsize[c])
+            else:
+                lin += str (cmdsize[c])
+    if sys.platform.startswith('win32'):
+        if col < "119" or lin < "35":
+            os.system('mode con:cols=119 lines=35')
+    else:
+        if col < "119" or lin < "49":
+            os.system("printf '\e[8;49;119t'")
 
 def banner():
     if sys.platform.startswith('win32'):
@@ -187,17 +210,16 @@ def validGmail(from_addr,cipher):
         valid = True
     return valid
 
+def saveRescipientLists():
+    f = open ("recipientLists.txt", "w")
+    for thing in range (len (sorted (recipientLists))):
+        f.write (sorted (recipientLists)[thing] + ":")
+        for things in range (len (recipientLists[sorted (recipientLists)[thing]])):
+            f.write (recipientLists[sorted (recipientLists)[thing]][things] + ":")
+        f.write ("\n")
+    f.close()
 
 def recipientEditor(recipientLists):
-    def saveRescipientLists():
-        f = open ("recipientLists.txt", "w")
-        for thing in range (len ((sorted (recipientLists)))):
-            f.write (sorted (recipientLists)[thing] + ":")
-            for things in range (len (recipientLists[sorted (recipientLists)[thing]])):
-                f.write (recipientLists[sorted (recipientLists)[thing]][things] + ":")
-            f.write ("\n")
-        f.close()
-
     print(bcolors.WARNING + '''
     Choose an Option:
     1) Add a list of recipients
@@ -252,12 +274,15 @@ def recipientEditor(recipientLists):
                         if opt == "1":
                             edit = input (bcolors.OKGREEN + "\nEnter new recipient: " + bcolors.ENDC)
                             rlist = recipientLists[wantEdit]
-                            rlist.append (edit)
-                            recipientLists[wantEdit] = rlist
-                            print (bcolors.OKGREEN + '\nCurrent list:\n')
-                            print (recipientLists[wantEdit])
-                            print ("" + bcolors.ENDC,end = "")
-                            saveRescipientLists()
+                            if edit in rlist:
+                                print (bcolors.FAIL + "\nRecipient already in list!\n" + bcolors.ENDC)
+                            else:
+                                rlist.append (edit)
+                                recipientLists[wantEdit] = rlist
+                                print (bcolors.OKGREEN + '\nCurrent list:\n')
+                                print (recipientLists[wantEdit])
+                                print ("" + bcolors.ENDC,end = "")
+                                saveRescipientLists()
                         elif opt == "2":
                             if len (recipientLists[wantEdit]) == 0:
                                 print (bcolors.FAIL + "\nYou don't have any recipients in this list yet!\n" + bcolors.ENDC)
@@ -350,7 +375,8 @@ def listSelector(recipientLists):
             print ("\n" + bcolors.OKGREEN + wantUse + ":",end = " ")
             print (recipientLists[wantUse])
             print ("" + bcolors.ENDC,end = "")
-            sure = input(bcolors.REDBG + "\nAre you sure? (Y/N): " + bcolors.ENDC)
+            sure = input (bcolors.REDBG + "\nAre you sure? (Y/N): ")
+            print(bcolors.ENDC + "", end = "")
             if sure.upper() == "Y":
                 recipients = recipientLists[wantUse]
             else:
@@ -452,6 +478,19 @@ def structure(numOfSenders,recipientLists):
                 to_addr = recipients
                 break
         elif not addr:
+            save = input (bcolors.OKGREEN + "\nDo you want to save these recipients to a new recipient list? (Y/N): " + bcolors.ENDC)
+            if save.upper() == "Y":
+                nameList = input (bcolors.OKGREEN + "\nName of new list: " + bcolors.ENDC)
+                if nameList in recipientLists:
+                    print (bcolors.FAIL + "\nList already exists!\n" + bcolors.ENDC)
+                else:
+                    print ("\n" + bcolors.OKGREEN + nameList + ":",end = " ")
+                    print (to_addr)
+                    print ("" + bcolors.ENDC,end = "")
+                    sure = input(bcolors.REDBG + "\nAre you sure? (Y/N): " + bcolors.ENDC)
+                    if sure.upper() == "Y":
+                        recipientLists[nameList] = to_addr
+                        saveRescipientLists()
             break
         else:
             to_addr.append(addr)
@@ -538,6 +577,7 @@ try:
     Sent = 0
     emailnum = -1
     passnum = -1
+    resize()
     banner()
     choice = mailChoice()
     choice = validChoice(choice)
@@ -557,13 +597,7 @@ try:
         f.close()
     except IOError:
         recipientLists = {}
-        f = open ("recipientLists.txt", "w")
-        for thing in range (len ((sorted (recipientLists)))):
-            f.write (sorted (recipientLists)[thing] + ":")
-            for things in range (len (recipientLists[sorted (recipientLists)[thing]])):
-                f.write (recipientLists[sorted (recipientLists)[thing]][things] + ":")
-            f.write ("\n")
-        f.close()
+        saveRescipientLists()
     while choice == "#":
         recipientLists = recipientEditor(recipientLists)
         choice = mailChoice()
