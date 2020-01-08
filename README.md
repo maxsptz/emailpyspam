@@ -96,10 +96,10 @@ You have the ability to use the program in two ways.
 Welcome message:
 
 
-![Image of welcome message](https://imgur.com/a/udMsq4W)
+![Image of welcome message](https://i.imgur.com/QgDSdpS.png)
 
 
-![Recipient-List editor](https://imgur.com/a/R95vfgE)
+![Recipient-List editor](https://i.imgur.com/glVuEQJ.png)
 
 ## Built With
 
