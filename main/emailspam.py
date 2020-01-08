@@ -208,6 +208,10 @@ def validGmail(from_addr,cipher):
         valid = True
     return valid
 
+def resetAllLists():
+    recipientLists = {}
+    saveRescipientLists()
+
 def saveRescipientLists():
     f = open ("recipientLists.txt", "w")
     for thing in range (len (sorted (recipientLists))):
@@ -225,6 +229,7 @@ def recipientEditor(recipientLists):
     3) Delete a list of recipients
     4) View all lists
     5) Quit recipient editor
+    #) Delete all saved lists
     ''' + bcolors.ENDC + '--------------------------------------------------------------')
     option = input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC)
 
@@ -337,6 +342,11 @@ def recipientEditor(recipientLists):
                     for entry in range (len (recipientLists[k])):
                         print (bcolors.OKGREEN + recipientLists[k][entry] + bcolors.ENDC)
                 time.sleep(1.5)
+        elif option == "#":
+            print (bcolors.REDBG + "\nAre you sure? (Y/N):" + bcolors.ENDC, end = " ")
+            sure = input ()
+            if sure.upper() == "Y":
+                resetAllLists()
         else:
             print (bcolors.FAIL + "\nInvaid choice!\n" + bcolors.ENDC)
         time.sleep(0.5)
@@ -347,6 +357,7 @@ def recipientEditor(recipientLists):
         3) Delete a list of recipients
         4) View all lists
         5) Quit recipient editor
+        #) Delete all saved lists
         ''' + bcolors.ENDC + '--------------------------------------------------------------')
         option = input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC)
     if sys.platform.startswith('win32'):
