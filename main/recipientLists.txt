@@ -1,2 +1,2 @@
 exampleList1:email1@domain1.com:email2@domain1.com:
-exampleList2:email1@domain2.com:email2@domain2.com:
+exampleList2:email2@domain1.com:email2@domain1.com:
