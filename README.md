@@ -99,6 +99,10 @@ Welcome message:
 ![Image of welcome message](https://i.imgur.com/QgDSdpS.png)
 
 
+
+Recipients Editor:
+
+
 ![Recipient-List editor](https://i.imgur.com/glVuEQJ.png)
 
 ## Built With
