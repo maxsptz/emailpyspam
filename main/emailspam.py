@@ -353,6 +353,7 @@ def recipientEditor(recipientLists):
         os.system('cls')
     else:
         os.system('clear')
+    banner()
     return recipientLists
 
 def listSelector(recipientLists):
