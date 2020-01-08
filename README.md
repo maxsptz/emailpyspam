@@ -89,7 +89,7 @@ You have the ability to use the program in two ways.
 * Extended
   * Have the program access a list of emails and passwords to access once an email has been locked
   * Access a suite of options to create permanently accessible lists of emails to selct and spam
-  * Send a limited or unlimited amount of output
+  * Send a limited or unlimited amount of emails
   * Comprehensive output
 ## Screenshots
 
