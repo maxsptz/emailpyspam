@@ -349,6 +349,10 @@ def recipientEditor(recipientLists):
         5) Quit recipient editor
         ''' + bcolors.ENDC + '--------------------------------------------------------------')
         option = input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC)
+    if sys.platform.startswith('win32'):
+        os.system('cls')
+    else:
+        os.system('clear')
     return recipientLists
 
 def listSelector(recipientLists):
@@ -356,10 +360,6 @@ def listSelector(recipientLists):
             print (bcolors.FAIL + "\nYou don't have any saved lists yet.\n" + bcolors.ENDC)
             openEditor = input (bcolors.GREEN + "Would you like to enter the recipient list editor? (Y/N): " + bcolors.ENDC)
             if openEditor.upper() == "Y":
-                if sys.platform.startswith('win32'):
-                    os.system('cls')
-                else:
-                    os.system('clear')
                 recipientLists = recipientEditor(recipientLists)
                 Continue = True
             else:
