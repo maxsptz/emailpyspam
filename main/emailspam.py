@@ -474,7 +474,7 @@ def gSingle():
     valid = False
     while not valid:
         from_addr = input(bcolors.OKGREEN + 'Your Google Email: ' + bcolors.ENDC)
-        cipher = getpass.getpass(bcolors.OKGREEN + 'Password (Note: You will not see what you are typing for security reasons):' + bcolors.ENDC)
+        cipher = getpass.getpass(bcolors.OKGREEN + 'Password (Note: Input is hidden):' + bcolors.ENDC)
         valid = validGmail(from_addr,cipher)
     numOfSenders = 1
     return from_addr,cipher,numOfSenders
