@@ -636,7 +636,7 @@ try:
             elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
-                print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
+                print (bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",str (Sent) + bcolors.ENDC)
             spam = True
             while spam is True and Sent < send:
                 if from_address == "" or from_address == "\n":
@@ -649,7 +649,7 @@ try:
                         elif table and recipientNum <= 2:
                             print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                         else:
-                            print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
+                            print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",str (Sent) + bcolors.ENDC)
                     except smtplib.SMTPSenderRefused:
                         print ("Limit reached. Switching emails...")
                         from_address,password,numOfSenders = gMultiple()
@@ -674,7 +674,7 @@ try:
             elif table and recipientNum <= 2:
                 print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
             else:
-                print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
+                print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",str (Sent) + bcolors.ENDC)
             while sent != 500 and Sent < send:
                 try:
                     gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
@@ -683,7 +683,7 @@ try:
                     elif table and recipientNum <= 2:
                         print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
                     else:
-                        print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
+                        print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",str (Sent) + bcolors.ENDC)
                 except smtplib.SMTPSenderRefused:
                     print ("Limit reached. Exiting...")
                     sys.exit()
