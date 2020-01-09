@@ -6,6 +6,8 @@ import time
 import getpass
 import sys
 import os
+import optparse
+
 try:
     from tabulate import tabulate
 except ModuleNotFoundError:
@@ -81,11 +83,11 @@ def resize():
             else:
                 lin += str (cmdsize[c])
     if sys.platform.startswith('win32'):
-        if col < "119" or lin < "35":
-            os.system('mode con:cols=119 lines=35')
+        if col < "123" or lin < "35":
+            os.system('mode con:cols=123 lines=35')
     else:
-        if col < "119" or lin < "49":
-            os.system("printf '\e[8;49;119t'")
+        if col < "123" or lin < "49":
+            os.system("printf '\e[8;49;123t'")
 
 def banner():
     if sys.platform.startswith('win32'):
@@ -161,12 +163,11 @@ def validSend(send,multiple,recipientNum,numOfSenders):
             send = int (send)
             if send > 0:
                 if send % recipientNum == 0:
-                    if (send * recipientNum) < (500 * numOfSenders):
+                    if (send) < (500 * numOfSenders):
                         valid = True
                     else:
                         message = True
                 else:
-                    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
                     print (bcolors.FAIL + "Amount can't be evenly distributed to recipients!"\
                     "\ne.g. 5 emails can't be evenly distributed to 2 recipients" + bcolors.ENDC)
                     time.sleep(0.5)
@@ -176,7 +177,6 @@ def validSend(send,multiple,recipientNum,numOfSenders):
                 message = True
         if message:
             print (bcolors.FAIL + "Invalid amount!" + bcolors.ENDC)
-            print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
             time.sleep(0.5)
             send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
             valid = False
@@ -210,6 +210,10 @@ def validGmail(from_addr,cipher):
         valid = True
     return valid
 
+def resetAllLists():
+    recipientLists = {}
+    saveRescipientLists()
+
 def saveRescipientLists():
     f = open ("recipientLists.txt", "w")
     for thing in range (len (sorted (recipientLists))):
@@ -227,6 +231,7 @@ def recipientEditor(recipientLists):
     3) Delete a list of recipients
     4) View all lists
     5) Quit recipient editor
+    #) Delete all saved lists
     ''' + bcolors.ENDC + '--------------------------------------------------------------')
     option = input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC)
 
@@ -318,7 +323,8 @@ def recipientEditor(recipientLists):
                     print ("\n" + bcolors.OKGREEN + wantDel + ":",end = " ")
                     print (recipientLists[wantDel])
                     print ("" + bcolors.ENDC,end = "")
-                    sure = input(bcolors.REDBG + "\nAre you sure? (Y/N): " + bcolors.ENDC)
+                    print (bcolors.REDBG + "\nAre you sure? (Y/N):" + bcolors.ENDC, end = " ")
+                    sure = input ()
                     if sure.upper() == "Y":
                         del recipientLists[wantDel]
                         saveRescipientLists()
@@ -338,6 +344,11 @@ def recipientEditor(recipientLists):
                     for entry in range (len (recipientLists[k])):
                         print (bcolors.OKGREEN + recipientLists[k][entry] + bcolors.ENDC)
                 time.sleep(1.5)
+        elif option == "#":
+            print (bcolors.REDBG + "\nAre you sure? (Y/N):" + bcolors.ENDC, end = " ")
+            sure = input ()
+            if sure.upper() == "Y":
+                resetAllLists()
         else:
             print (bcolors.FAIL + "\nInvaid choice!\n" + bcolors.ENDC)
         time.sleep(0.5)
@@ -348,14 +359,28 @@ def recipientEditor(recipientLists):
         3) Delete a list of recipients
         4) View all lists
         5) Quit recipient editor
+        #) Delete all saved lists
         ''' + bcolors.ENDC + '--------------------------------------------------------------')
         option = input(bcolors.OKGREEN + '\nNumber: ' + bcolors.ENDC)
+    if sys.platform.startswith('win32'):
+        os.system('cls')
+    else:
+        os.system('clear')
+    banner()
     return recipientLists
 
 def listSelector(recipientLists):
     if len (recipientLists) == 0:
-            print (bcolors.FAIL + "\nYou don't have any saved lists yet!\n" + bcolors.ENDC)
+            print (bcolors.FAIL + "\nYou don't have any saved lists yet.\n" + bcolors.ENDC)
+            openEditor = input (bcolors.GREEN + "Would you like to enter the recipient list editor? (Y/N): " + bcolors.ENDC)
+            if openEditor.upper() == "Y":
+                recipientLists = recipientEditor(recipientLists)
+                Continue = True
+            else:
+                Continue = False
     else:
+        Continue = True
+    if Continue:
         wantUse = input (bcolors.OKGREEN + "\nEnter the name of the list you would like to use (or \"#\" to show all existing lists): " + bcolors.ENDC)
         while wantUse == "#":
             keys = sorted (recipientLists)
@@ -375,12 +400,14 @@ def listSelector(recipientLists):
             print ("\n" + bcolors.OKGREEN + wantUse + ":",end = " ")
             print (recipientLists[wantUse])
             print ("" + bcolors.ENDC,end = "")
-            sure = input (bcolors.REDBG + "\nAre you sure? (Y/N): ")
-            print(bcolors.ENDC + "", end = "")
+            print (bcolors.REDBG + "\nAre you sure? (Y/N):" + bcolors.ENDC, end = " ")
+            sure = input ()
             if sure.upper() == "Y":
                 recipients = recipientLists[wantUse]
             else:
                 recipients = "normal"
+    else:
+        recipients = "normal"
     return recipients
 
 # Choose Mail Service
@@ -411,7 +438,6 @@ def gmailInstruct():
     print(bcolors.FAIL + "\nDISCLAIMER: To send emails with Gmail, you need to enable less secure apps:\n" + bcolors.ENDC)
     print(bcolors.URL + "https://myaccount.google.com/lesssecureapps" + bcolors.ENDC)
     print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of 500 emails per day per account" + bcolors.ENDC)
-    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count (e.g. 1 email with 2 recipients counts as 2 emails)." + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
     "\nDo you wish to surpass the limit using multiple emails?"\
     "\n(If so, emails and passwords must be predefined in gmail.txt and gmailpass.txt)"\
@@ -427,8 +453,7 @@ def gMultiple():
     global emailnum
     global passnum
     try:
-        fpath = os.path.join(src,"gmail.txt")
-        file = open(fpath, "r")
+        file = open("gmail.txt", "r")
         fileStuff = file.readline()
         gmail = fileStuff.split(",")
         emailnum += 1
@@ -441,8 +466,7 @@ def gMultiple():
         print (bcolors.FAIL + "gmail.txt not found! Exiting..." + bcolors.ENDC)
         sys.exit()
     try:
-        fpath = os.path.join(src,"gmailpass.txt")
-        passfile = open(fpath, "r")
+        passFile = open("gmailpass.txt", "r")
         passFileStuff = passFile.readline()
         passThing = passFileStuff.split(",")
         passnum += 1
@@ -470,9 +494,15 @@ def structure(numOfSenders,recipientLists):
     to_addr = []
     addr = ""
     number = random.randint(0, 10000)
+    cnt = 0
     while True:
-        addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish (or \"#\" to use a predefined recipient list): " + bcolors.ENDC)
-        if addr == "#":
+        if cnt == 0:
+            addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish (or \"#\" to use a predefined recipient list): " + bcolors.ENDC)
+            cnt += 1
+        else:
+            addr = input(bcolors.OKGREEN + "Type in the recipient(s), hit enter to finish: " + bcolors.ENDC)
+            cnt += 1
+        if addr == "#" and cnt == 1:
             recipients = listSelector(recipientLists)
             if recipients != "normal":
                 to_addr = recipients
@@ -496,7 +526,6 @@ def structure(numOfSenders,recipientLists):
             to_addr.append(addr)
     recipientNum = len (to_addr)
     to_addr,recipientNum = validRecipientNum(to_addr,recipientNum)
-    print(bcolors.FAIL + "\nKeep in mind, each recipient of the same email adds to the email count." + bcolors.ENDC)
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
         send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
@@ -561,8 +590,8 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
             server.login(from_addr, cipher)
             server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
             server.quit()
-            sent += (1*recipientNum)
-            Sent += (1*recipientNum)
+            sent += (1)
+            Sent += (1)
             time.sleep(speed)
         except smtplib.SMTPAuthenticationError:
             print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
@@ -571,57 +600,107 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
             print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
             sys.exit()
 
+def getops(): #Get options and turn off interactive mode
+    parser = optparse.OptionParser()
+    parser.add_option('-i', '--interactive', default=False, action='store_true', dest='interactive', help='this choice negates interactive mode')
+    parser.add_option('-t', '--to', action='append', dest='to_address', help='the email address you are spamming e.x.: email@gmail (cannot contain .com)')
+    parser.add_option('-f', '--from', type='string', dest='from_address', help='the email you are spamming from')
+    parser.add_option('-d', '--interval', type='int', dest='sendSpeed', help='the interval in seconds in which you want to send the emails')#this cant be set to i cause interactive mode is set to i as well
+    parser.add_option('-p', '--password', type='string', dest='password', help='the password for the email account you are spamming from')
+    parser.add_option('-s', '--subject', type='string', dest='subject', help='the subject of the email you want to spam')
+    parser.add_option('-b', '--body', type='string', dest='body', help='the actual message inside the email you wish to spam')
+    parser.add_option('-e', '--num-of-emails', dest='recipientNum', help='the number of email addresses you want to send from')
+    parser.add_option('-n', '--num', type='int', dest='send', help='the number of emails you wish to send')
+    (options, arguments) = parser.parse_args()
+    return options
+
 # Main Program
 try:
+    ops = getops()
     sent = 0
     Sent = 0
     emailnum = -1
     passnum = -1
-    resize()
-    banner()
-    choice = mailChoice()
-    choice = validChoice(choice)
-    try:
-        recipientLists = {}
-        f = open("recipientLists.txt", "r")
-        for l in f:
-            line = l.split(":")
-            line.remove ("\n")
-            values = []
-            key = line[0]
-            line.remove (key)
-            for v in range (len (line)):
-                val = line[v]
-                values.append (val)
-            recipientLists[key] = values
-        f.close()
-    except IOError:
-        recipientLists = {}
-        saveRescipientLists()
-    while choice == "#":
-        recipientLists = recipientEditor(recipientLists)
+    if(ops.interactive == False):
+        resize()
+        banner()
         choice = mailChoice()
         choice = validChoice(choice)
-    if choice == "2" or choice == "3":
-        legacy()
-    # Gmail
-    if choice == "1":
-        multiple = gmailInstruct()
-        multiple = validMultiple(multiple)
-        if multiple == "1" or multiple.upper() == "YES":
-            from_address,password,numOfSenders = gMultiple()
-            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
-            if loadingBar and send != float ("inf"):
-                pbar = tqdm(total=(send/recipientNum))
-            elif table and recipientNum <= 2:
-                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
-            else:
-                print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
-            spam = True
-            while spam is True and Sent < send:
-                if from_address == "" or from_address == "\n":
-                    spam = False
+        try:
+            recipientLists = {}
+            f = open("recipientLists.txt", "r")
+            for l in f:
+                line = l.split(":")
+                line.remove ("\n")
+                values = []
+                key = line[0]
+                line.remove (key)
+                for v in range (len (line)):
+                    val = line[v]
+                    values.append (val)
+                recipientLists[key] = values
+            f.close()
+        except IOError:
+            recipientLists = {}
+            saveRescipientLists()
+        while choice == "#":
+            recipientLists = recipientEditor(recipientLists)
+            choice = mailChoice()
+            choice = validChoice(choice)
+        if choice == "2" or choice == "3":
+            legacy()
+        # Gmail
+        if choice == "1":
+            multiple = gmailInstruct()
+            multiple = validMultiple(multiple)
+            if multiple == "1" or multiple.upper() == "YES":
+                from_address,password,numOfSenders = gMultiple()
+                sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
+                if loadingBar and send != float ("inf"):
+                    pbar = tqdm(total=(send))
+                elif table and recipientNum <= 2:
+                    print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
                 else:
+                    print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
+                spam = True
+                while spam is True and Sent < send:
+                    if from_address == "" or from_address == "\n":
+                        spam = False
+                    else:
+                        try:
+                            gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                            if loadingBar and send != float ("inf"):
+                                pbar.update(1)
+                            elif table and recipientNum <= 2:
+                                print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
+                            else:
+                                print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
+                        except smtplib.SMTPSenderRefused:
+                            print ("Limit reached. Switching emails...")
+                            from_address,password,numOfSenders = gMultiple()
+                            spam = True
+                            sent = 0
+                        except smtplib.SMTPDataError:
+                            print ("Limit reached. Switching emails...")
+                            from_address,password,numOfSenders = gMultiple()
+                            spam = True
+                            sent = 0
+                        if sent == 500:
+                            from_address,password,numOfSenders = gMultiple()
+                            spam = True
+                            sent = 0
+                if loadingBar and send != float ("inf"):
+                    pbar.close()
+            elif multiple == "2" or multiple.upper() == "NO":
+                from_address,password,numOfSenders = gSingle()
+                sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
+                if loadingBar and send != float ("inf"):
+                    pbar = tqdm(total=(send))
+                elif table and recipientNum <= 2:
+                    print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+                else:
+                    print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
+                while sent != 500 and Sent < send:
                     try:
                         gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         if loadingBar and send != float ("inf"):
@@ -631,50 +710,25 @@ try:
                         else:
                             print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
                     except smtplib.SMTPSenderRefused:
-                        print ("Limit reached. Switching emails...")
-                        from_address,password,numOfSenders = gMultiple()
-                        spam = True
-                        sent = 0
+                        print ("Limit reached. Exiting...")
+                        sys.exit()
                     except smtplib.SMTPDataError:
-                        print ("Limit reached. Switching emails...")
-                        from_address,password,numOfSenders = gMultiple()
-                        spam = True
-                        sent = 0
-                    if sent == 500:
-                        from_address,password,numOfSenders = gMultiple()
-                        spam = True
-                        sent = 0
-            if loadingBar and send != float ("inf"):
-                pbar.close()
-        elif multiple == "2" or multiple.upper() == "NO":
-            from_address,password,numOfSenders = gSingle()
-            sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
-            if loadingBar and send != float ("inf"):
-                pbar = tqdm(total=(send/recipientNum))
-            elif table and recipientNum <= 2:
-                print (tabulate([[from_address,to_address,Sent]], headers=["From:", "To:","Sent:"], tablefmt="github"))
+                        print ("Limit reached. Exiting...")
+                        sys.exit()
+                if loadingBar and send != float ("inf"):
+                    pbar.close()
             else:
-                print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
-            while sent != 500 and Sent < send:
-                try:
-                    gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
-                    if loadingBar and send != float ("inf"):
-                        pbar.update(1)
-                    elif table and recipientNum <= 2:
-                        print (tabulate([[from_address,to_address,Sent]], headers=["     ","   ","     "], tablefmt="github"))
-                    else:
-                        print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",Sent + bcolors.ENDC)
-                except smtplib.SMTPSenderRefused:
-                    print ("Limit reached. Exiting...")
-                    sys.exit()
-                except smtplib.SMTPDataError:
-                    print ("Limit reached. Exiting...")
-                    sys.exit()
-            if loadingBar and send != float ("inf"):
-                pbar.close()
-        else:
-            print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
-            sys.exit()
+                print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
+                sys.exit()
+    elif (ops.interactive == True): # this code is called when the user disables interactive mode
+        numsent = -1
+        length = len(ops.subject)  # find the length of the subject, in order to provide a seed for the random number generator in gmailSpam()
+        recipientNum = int(ops.recipientNum)  # set this variable to an integer
+        if recipientNum <= 500:
+            while numsent <= ops.send:
+                gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password,
+                          recipientNum)  # run the spam script with the given options
+                numsent = numsent + 1
 
 except KeyboardInterrupt:
     print(bcolors.FAIL + "\nCancelled!" + bcolors.ENDC)
