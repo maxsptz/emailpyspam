@@ -149,7 +149,7 @@ def validRecipientNum(to_addr,recipientNum):
                     to_addr.append(addr)
     return to_addr,recipientNum
 
-def validSend(send,multiple,recipientNum,numOfSenders):
+def validSend(send,multiple,recipientNum):
     valid = False
     while not valid:
         message = False
@@ -160,7 +160,7 @@ def validSend(send,multiple,recipientNum,numOfSenders):
         else:
             send = int (send)
             if send > 0:
-                if (send) < 500:
+                if send < 500:
                     valid = True
                 else:
                     message = True
@@ -426,7 +426,7 @@ def legacy():
 # Gmail DISCLAIMER
 
 def gmailInstruct():
-    print(bcolors.FAIL + "\nDISCLAIMER: To send emails with Gmail, you need to enable less secure apps:\n" + bcolors.ENDC)
+    print(bcolors.FAIL + "\nNOTE: To send emails with Gmail, you need to enable less secure apps:\n" + bcolors.ENDC)
     print(bcolors.URL + "https://myaccount.google.com/lesssecureapps" + bcolors.ENDC)
     print(bcolors.FAIL + "\nDISCLAIMER: Gmail has a limit of 500 emails per day per account" + bcolors.ENDC)
     print(bcolors.WARNING + "The email limit can be surpassed by using multiple emails."\
@@ -520,7 +520,7 @@ def structure(numOfSenders,recipientLists):
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
         send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
-        send = validSend(send,multiple,recipientNum,numOfSenders)
+        send = validSend(send,multiple,recipientNum)
     else:
         send = float ("inf")
     predef = input(bcolors.OKGREEN + 'Would you like to use the subject saved in subject.txt? (Y/N): ' + bcolors.ENDC)
