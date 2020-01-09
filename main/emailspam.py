@@ -160,17 +160,10 @@ def validSend(send,multiple,recipientNum,numOfSenders):
         else:
             send = int (send)
             if send > 0:
-                if send % recipientNum == 0:
-                    if (send) < (500 * numOfSenders):
-                        valid = True
-                    else:
-                        message = True
+                if (send) < 500:
+                    valid = True
                 else:
-                    print (bcolors.FAIL + "Amount can't be evenly distributed to recipients!"\
-                    "\ne.g. 5 emails can't be evenly distributed to 2 recipients" + bcolors.ENDC)
-                    time.sleep(0.5)
-                    send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
-                    valid = False
+                    message = True
             else:
                 message = True
         if message:
