@@ -202,6 +202,12 @@ def validGmail(from_addr,cipher):
     return valid
 
 def resetAllLists():
+    global recipientLists
+    try:
+        while ("recipientLists.txt"):
+            os.remove ("recipientLists.txt")
+    except FileNotFoundError:
+        print ("\nLists successfully deleted")
     recipientLists = {}
     saveRescipientLists()
 
@@ -340,6 +346,7 @@ def recipientEditor(recipientLists):
             sure = input ()
             if sure.upper() == "Y":
                 resetAllLists()
+                recipientLists = {}
         else:
             print (bcolors.FAIL + "\nInvaid choice!\n" + bcolors.ENDC)
         time.sleep(0.5)
