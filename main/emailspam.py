@@ -144,6 +144,19 @@ def validRecipientNum(to_addr,recipientNum):
                         to_addr = recipients
                         break
                 elif not addr:
+                    save = input (bcolors.OKGREEN + "\nDo you want to save these recipients to a new recipient list? (Y/N): " + bcolors.ENDC)
+                    if save.upper() == "Y":
+                        nameList = input (bcolors.OKGREEN + "\nName of new list: " + bcolors.ENDC)
+                        if nameList in recipientLists:
+                            print (bcolors.FAIL + "\nList already exists!\n" + bcolors.ENDC)
+                        else:
+                            print ("\n" + bcolors.OKGREEN + nameList + ":",end = " ")
+                            print (to_addr)
+                            print ("" + bcolors.ENDC,end = "")
+                            sure = input(bcolors.REDBG + "\nAre you sure? (Y/N): " + bcolors.ENDC)
+                            if sure.upper() == "Y":
+                                recipientLists[nameList] = to_addr
+                                saveRescipientLists()
                     break
                 else:
                     to_addr.append(addr)
