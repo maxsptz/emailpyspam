@@ -220,7 +220,7 @@ def resetAllLists():
         while ("recipientLists.txt"):
             os.remove ("recipientLists.txt")
     except FileNotFoundError:
-        print ("\nLists successfully deleted")
+        print (bcolors.WARNING + "\nLists successfully deleted" + bcolors.ENDC)
     recipientLists = {}
     saveRescipientLists()
 
