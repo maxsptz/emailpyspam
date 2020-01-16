@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
-#### Linux (Bash)
+
 Clone the repository
 
 ```
@@ -49,38 +49,6 @@ Start the program
 python3 emailspam.py
 ```
 
-
-#### Windows (Command Prompt)
-Clone the repository
-
-```
-git clone https://github.com/Curioo/emailpyspam.git
-```
-
-Install required libraries
-
-```
-pip install -r requirements.txt
-```
-
-Navigate into main directory
-
-```
-cd emailspam/
-```
-
-Navigate into sub-directory
-
-```
-cd main/
-```
-
-Start the program
-
-```
-python emailspam
-```
-
 ## Usage
 
 You have the ability to use the program in two ways.
@@ -88,29 +56,17 @@ You have the ability to use the program in two ways.
   * Type an email and password in at the beginning
 * Extended
   * Have the program access a list of emails and passwords to access once an email has been locked
-  * Access a suite of options to create permanently accessible lists of emails to select and spam
-  * Send a limited or unlimited amount of emails
-  * Comprehensive output
 ## Screenshots
 
 Welcome message:
 
 
-![Image of welcome message](https://i.imgur.com/QgDSdpS.png)
-
-
-
-Recipients Editor:
-
-
-![Recipient-List editor](https://i.imgur.com/glVuEQJ.png)
+![Image of welcome message](https://i.imgur.com/q3RLv0V.png)
 
 ## Built With
 
 * [Python](https://www.python.org) - The language used
 * [Atom](https://Atom.io) - Code editing
-* [Tabulate](https://pypi.org/project/tabulate/) - Customization
-* [tqdm](https://pypi.org/project/tqdm/) - Loading bar
 
 ## Contributing
 
@@ -120,7 +76,6 @@ Please read [CONTRIBUTING.md](https://github.com/Curioo/emailpyspam/blob/master/
 
 * **Max Spitzer** - *Initial work* - [Curioo](https://github.com/Curioo)
 * **Franco Aparicio** - *Main Contributor* - [NONAME1103](https://github.com/NONAME1103)
-* **Ethan Moore** - *Web Designer* - [quarksrcool](https://github.com/quarksrcool)
 
 See also the list of [contributors](https://github.com/Curioo/emailpyspam/contributors) who participated in this project.
 
