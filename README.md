@@ -48,7 +48,38 @@ Start the program
 ```
 python3 emailspam.py
 ```
+There is also a non interactive mode, you can see the options for running it in non interactive mode with
+```
+python3 emailspam.py -h
+```
 
+Which creates the following output
+
+```
+Usage: emailspam.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -i, --interactive     this choice negates interactive mode
+  -t TO_ADDRESS, --to=TO_ADDRESS
+                        the email address you are spamming e.x.: email@gmail
+                        (cannot contain .com)
+  -f FROM_ADDRESS, --from=FROM_ADDRESS
+                        the email you are spamming from
+  -d SENDSPEED, --interval=SENDSPEED
+                        the interval in seconds in which you want to send the
+                        emails
+  -p PASSWORD, --password=PASSWORD
+                        the password for the email account you are spamming
+                        from
+  -s SUBJECT, --subject=SUBJECT
+                        the subject of the email you want to spam
+  -b BODY, --body=BODY  the actual message inside the email you wish to spam
+  -e RECIPIENTNUM, --num-of-emails=RECIPIENTNUM
+                        the number of email addresses you want to send from
+  -n SEND, --num=SEND   the number of emails you wish to send
+
+```
 ## Usage
 
 You have the ability to use the program in two ways.
