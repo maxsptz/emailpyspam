@@ -107,6 +107,7 @@ Please read [CONTRIBUTING.md](https://github.com/Curioo/emailpyspam/blob/master/
 
 * **Max Spitzer** - *Initial work* - [Curioo](https://github.com/Curioo)
 * **Franco Aparicio** - *Main Contributor* - [NONAME1103](https://github.com/NONAME1103)
+* **Ethan Moore** - *Web Design and additional features* - [quarksrcool](https://github.com/quarksrcool)
 
 See also the list of [contributors](https://github.com/Curioo/emailpyspam/contributors) who participated in this project.
 
