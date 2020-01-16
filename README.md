@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
-
+#### Linux (Bash)
 Clone the repository
 
 ```
@@ -49,6 +49,38 @@ Start the program
 python3 emailspam.py
 ```
 
+
+#### Windows (Command Prompt)
+Clone the repository
+
+```
+git clone https://github.com/Curioo/emailpyspam.git
+```
+
+Install required libraries
+
+```
+pip install -r requirements.txt
+```
+
+Navigate into main directory
+
+```
+cd emailspam/
+```
+
+Navigate into sub-directory
+
+```
+cd main/
+```
+
+Start the program
+
+```
+python emailspam
+```
+
 ## Usage
 
 You have the ability to use the program in two ways.
@@ -61,7 +93,7 @@ You have the ability to use the program in two ways.
 Welcome message:
 
 
-![Image of welcome message](https://i.imgur.com/q3RLv0V.png)
+![Image of welcome message](https://i.imgur.com/G1X8r49.png)
 
 ## Built With
 
