@@ -742,7 +742,7 @@ try:
             while numsent <= ops.send:
                 gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password, recipientNum)  # run the spam script with the given options
                 numsent = numsent + 1
-            number + 1
+            numsent + 1
             number = str(numsent)
             print("[+] EMAILS SENT " + number)
 
