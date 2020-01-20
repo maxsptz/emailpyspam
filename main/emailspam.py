@@ -734,7 +734,7 @@ try:
                 print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
                 sys.exit()
     elif (ops.interactive == True): # this code is called when the user disables interactive mode
-        numsent = -1
+        numsent = 0
         length = len(ops.subject)  # find the length of the subject, in order to provide a seed for the random number generator in gmailSpam()
         recipientNum = int(ops.recipientNum)  # set this variable to an integer
         if recipientNum <= 500:
