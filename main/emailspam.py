@@ -627,6 +627,7 @@ def getops(): #Get options and turn off interactive mode
     (options, arguments) = parser.parse_args()
     return options
 
+
 # Main Program
 try:
     sent = 0
@@ -714,6 +715,7 @@ try:
                 else:
                     print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",str (Sent) + bcolors.ENDC)
                 while sent != 500 and Sent < send:
+
                     try:
                         gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
                         if loadingBar and send != float ("inf"):
