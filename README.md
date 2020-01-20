@@ -92,7 +92,7 @@ You have the ability to use the program in two ways.
 Welcome message:
 
 
-![Image of welcome message](https://i.imgur.com/q3RLv0V.png)
+![Image of welcome message](https://i.imgur.com/G1X8r49.png)
 
 ## Built With
 
