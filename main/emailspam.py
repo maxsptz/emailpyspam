@@ -738,7 +738,7 @@ try:
         length = len(ops.subject)  # find the length of the subject, in order to provide a seed for the random number generator in gmailSpam()
         recipientNum = int(ops.recipientNum)  # set this variable to an integer
         if recipientNum <= 500:
-            ops.send = ops.send - 1
+            ops.send = ops.send - 2
             while numsent <= ops.send:
                 gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password, recipientNum)  # run the spam script with the given options
                 numsent = numsent + 1
