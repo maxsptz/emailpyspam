@@ -48,7 +48,39 @@ Start the program
 ```
 python3 emailspam.py
 ```
+There is also a non interactive mode, you can see the options for running it in non interactive mode with
+```
+python3 emailspam.py -h
+```
 
+Which creates the following output
+
+
+Usage: emailspam.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -i, --interactive     this choice negates interactive mode
+  -t TO_ADDRESS, --to=TO_ADDRESS
+                        the email address you are spamming e.x.: email@gmail
+                        (cannot contain .com)
+  -f FROM_ADDRESS, --from=FROM_ADDRESS
+                        the email you are spamming from
+  -d SENDSPEED, --interval=SENDSPEED
+                        the interval in seconds in which you want to send the
+                        emails
+  -p PASSWORD, --password=PASSWORD
+                        the password for the email account you are spamming
+                        from
+  -s SUBJECT, --subject=SUBJECT
+                        the subject of the email you want to spam
+  -b BODY, --body=BODY  the actual message inside the email you wish to spam
+  -e RECIPIENTNUM, --num-of-emails=RECIPIENTNUM
+                        the number of email addresses you want to send from
+  -n SEND, --num=SEND   the number of emails you wish to send
+
+```
+=======
 
 #### Windows (Command Prompt)
 Clone the repository
@@ -108,6 +140,7 @@ Please read [CONTRIBUTING.md](https://github.com/Curioo/emailpyspam/blob/master/
 
 * **Max Spitzer** - *Initial work* - [Curioo](https://github.com/Curioo)
 * **Franco Aparicio** - *Main Contributor* - [NONAME1103](https://github.com/NONAME1103)
+* **Ethan Moore** - *Web Design and additional features* - [quarksrcool](https://github.com/quarksrcool)
 
 See also the list of [contributors](https://github.com/Curioo/emailpyspam/contributors) who participated in this project.
 
