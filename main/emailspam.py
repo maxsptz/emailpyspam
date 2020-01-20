@@ -734,7 +734,7 @@ try:
                 print (bcolors.FAIL + "Invaid choice!" + bcolors.ENDC)
                 sys.exit()
     elif (ops.interactive == True): # this code is called when the user disables interactive mode
-        numsent = 0
+        numsent = -1
         length = len(ops.subject)  # find the length of the subject, in order to provide a seed for the random number generator in gmailSpam()
         recipientNum = int(ops.recipientNum)  # set this variable to an integer
         if recipientNum <= 500:
@@ -743,7 +743,7 @@ try:
                 gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password, recipientNum)  # run the spam script with the given options
                 numsent = numsent + 1
             number = str(numsent)
-            print("[+] EMAILS SENT " + number)
+            print("[+] EMAILS SENT " + number + 1)
 
 except KeyboardInterrupt:
     print(bcolors.FAIL + "\nCancelled!" + bcolors.ENDC)
