@@ -86,8 +86,8 @@ def resize():
         if col < "123" or lin < "35":
             os.system('mode con:cols=123 lines=35')
     else:
-        if col < "123" or lin < "49":
-            os.system("printf '\e[8;49;123t'")
+        """if col < "123" or lin < "49":
+            os.system("printf '\e[8;49;123t'")"""
 
 def banner():
     if sys.platform.startswith('win32'):
@@ -210,7 +210,7 @@ def validGmail(from_addr,cipher):
         server.login(from_addr, cipher)
         server.quit()
     except smtplib.SMTPAuthenticationError:
-        print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Try again" + bcolors.ENDC)
+        print(bcolors.FAIL + "\nThe email / password you have entered is incorrect\nor access to less secure apps is disabled! Try again" + bcolors.ENDC)
         valid = False
     else:
         valid = True
@@ -503,7 +503,7 @@ def gSingle():
 
 # Main structure (subject, body, etc.)
 
-def structure(numOfSenders,recipientLists):
+def structure(recipientLists):
     to_addr = []
     addr = ""
     number = random.randint(0, 10000)
@@ -539,6 +539,11 @@ def structure(numOfSenders,recipientLists):
             to_addr.append(addr)
     recipientNum = len (to_addr)
     to_addr,recipientNum = validRecipientNum(to_addr,recipientNum)
+    bcc = input(bcolors.OKGREEN + "Would you like recipients to not see other recipients (use BCC header)? (Y/N): " + bcolors.ENDC)
+    if bcc.lower() == "y":
+        bcc = "BCC"
+    else:
+        bcc = "TO"
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
         send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
@@ -580,34 +585,33 @@ def structure(numOfSenders,recipientLists):
 
     print(bcolors.WARNING + "Emails will be sent continuously, until this window is closed." + bcolors.ENDC)
     time.sleep(1)
-    return speed,to_addr,body,subject,length,recipientNum,send
+    return speed,to_addr,body,subject,length,recipientNum,send,bcc
 
 # Main Spammer (Gmail)
 
-def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,recipientNum):
+def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,bcc):
         global sent
         global Sent
         number = random.randint(0, 10000)
         subject = subject[0:length] + " (" + str(number) + ")"
         # Construct email
-        msg = EmailMessage()
-        msg.add_header('From', from_addr)
-        msg.add_header('To', ', '.join(to_addr))
-        msg.add_header('Subject', subject)
-        msg.set_payload(body)
+        BODY = "\r\n".join(("From: %s" % from_addr,
+            "%s: %s" % (bcc,', '.join(to_addr)),
+            "Subject: %s" % subject,
+            "", body))
         # Connect
         server = smtplib.SMTP('smtp.gmail.com', 587)
         # Start TLS for security
         server.starttls()
         try:
             server.login(from_addr, cipher)
-            server.send_message(msg, from_addr=from_addr, to_addrs=to_addr)
+            server.sendmail(from_addr, to_addr, BODY)
             server.quit()
             sent += (1)
             Sent += (1)
             time.sleep(speed)
         except smtplib.SMTPAuthenticationError:
-            print(bcolors.FAIL + "\nThe email / password you have entered is incorrect! Exiting..." + bcolors.ENDC)
+            print(bcolors.FAIL + "\nThe email / password you have entered is incorrect\nor access to less secure apps is disabled!\nExiting..." + bcolors.ENDC)
             sys.exit()
         except smtplib.SMTPRecipientsRefused:
             print(bcolors.FAIL + "\nThe recipient's email adress is invalid! Exiting..." + bcolors.ENDC)
@@ -668,7 +672,7 @@ try:
             multiple = validMultiple(multiple)
             if multiple == "1" or multiple.upper() == "YES":
                 from_address,password,numOfSenders = gMultiple()
-                sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
+                sendSpeed,to_address,body,subject,length,recipientNum,send,bcc = structure(recipientLists)
                 if loadingBar and send != float ("inf"):
                     pbar = tqdm(total=(send))
                 elif table and recipientNum <= 2:
@@ -681,7 +685,7 @@ try:
                         spam = False
                     else:
                         try:
-                            gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                            gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,bcc)
                             if loadingBar and send != float ("inf"):
                                 pbar.update(1)
                             elif table and recipientNum <= 2:
@@ -706,7 +710,7 @@ try:
                     pbar.close()
             elif multiple == "2" or multiple.upper() == "NO":
                 from_address,password,numOfSenders = gSingle()
-                sendSpeed,to_address,body,subject,length,recipientNum,send = structure(numOfSenders,recipientLists)
+                sendSpeed,to_address,body,subject,length,recipientNum,send,bcc = structure(recipientLists)
                 if loadingBar and send != float ("inf"):
                     pbar = tqdm(total=(send))
                 elif table and recipientNum <= 2:
@@ -715,7 +719,7 @@ try:
                     print ( bcolors.OKGREEN + "\nFrom:",from_address,"\tTo:",to_address,"\tSent:",str (Sent) + bcolors.ENDC)
                 while sent != 500 and Sent < send:
                     try:
-                        gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,recipientNum)
+                        gmailSpam(sendSpeed,from_address,to_address,body,subject,length,password,bcc)
                         if loadingBar and send != float ("inf"):
                             pbar.update(1)
                         elif table and recipientNum <= 2:
@@ -740,7 +744,7 @@ try:
         if recipientNum <= 500:
             ops.send = ops.send - 2
             while numsent <= ops.send:
-                gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password, recipientNum)  # run the spam script with the given options
+                gmailSpam(ops.sendSpeed, ops.from_address, ops.to_address, ops.body, ops.subject, length, ops.password, bcc)  # run the spam script with the given options
                 numsent = numsent + 1
             number = str(numsent + 1)
             print("[+] EMAILS SENT " + number)
