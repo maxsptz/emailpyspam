@@ -111,16 +111,16 @@ Start the program
 
 ```
 python emailspam
-
+```
 
 ## Usage
-```
+
 You have the ability to use the program in two ways.
 * Simple
   * Type an email and password in at the beginning
 * Extended
   * Have the program access a list of emails and passwords to access once an email has been locked
-  ```
+  
 ## Screenshots
 
 Welcome message:
