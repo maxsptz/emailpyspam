@@ -543,7 +543,7 @@ def structure(recipientLists):
     if bcc.lower() == "y":
         bcc = "BCC"
     else:
-        bcc = "TO"
+        bcc = "To"
     limit = input(bcolors.OKGREEN + "Would you like to send a specific number of emails? (Y/N): " + bcolors.ENDC)
     if limit.lower() == "y":
         send = input(bcolors.FAIL + "Enter the number of emails you want to send: " + bcolors.ENDC)
@@ -594,18 +594,18 @@ def gmailSpam(speed,from_addr,to_addr,body,subject,length,cipher,bcc):
         global Sent
         number = random.randint(0, 10000)
         subject = subject[0:length] + " (" + str(number) + ")"
-        # Construct email
-        BODY = "\r\n".join(("From: %s" % from_addr,
-            "%s: %s" % (bcc,', '.join(to_addr)),
-            "Subject: %s" % subject,
-            "", body))
+        msg = EmailMessage()
+        msg.add_header('From', from_addr)
+        if bcc != "BCC": msg.add_header('To', ', '.join(to_addr))
+        msg.add_header('Subject', subject)
+        msg.set_payload(body)
         # Connect
         server = smtplib.SMTP('smtp.gmail.com', 587)
         # Start TLS for security
         server.starttls()
         try:
             server.login(from_addr, cipher)
-            server.sendmail(from_addr, to_addr, BODY)
+            server.send_message(msg, from_addr = from_addr, to_addrs = to_addr)
             server.quit()
             sent += (1)
             Sent += (1)
