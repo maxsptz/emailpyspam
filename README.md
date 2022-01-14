@@ -5,7 +5,7 @@
 # EmailPySpam
 
 Python 3+ program to send emails to a list of users repetitively.
-
+**WARNING**: This project will be rewritten soon. Fork the repository if you wish to keep our current iteration of the program. Thanks!
 
 ## Getting Started
 
